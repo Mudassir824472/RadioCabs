@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RadioCabs.Models;
 
@@ -10,9 +11,11 @@ using RadioCabs.Models;
 namespace RadioCabs.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class RadioCabsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260202202122_2nds")]
+    partial class _2nds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +94,7 @@ namespace RadioCabs.Migrations
 
                     b.Property<string>("CompanyUniqueId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactPerson")
                         .IsRequired()
@@ -121,6 +124,7 @@ namespace RadioCabs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentType")
@@ -131,9 +135,6 @@ namespace RadioCabs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompanyId");
-
-                    b.HasIndex("CompanyUniqueId")
-                        .IsUnique();
 
                     b.ToTable("Companies");
                 });

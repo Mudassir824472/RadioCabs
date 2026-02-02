@@ -1,0 +1,62 @@
+﻿@model RadioCabs.Models.CompanyProfileViewModel
+
+<h2>Company Profile</h2>
+
+<form asp-action="Profile" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="CompanyId" />
+
+    <label>Company Name</label>
+    <input asp-for="CompanyName" class="form-control" />
+    <span asp-validation-for="CompanyName" class="text-danger"></span>
+
+    <label>Company Unique ID (readonly)</label>
+    <input asp-for="CompanyUniqueId" class="form-control" readonly />
+
+    <label>Email</label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <label>Contact Person</label>
+    <input asp-for="ContactPerson" class="form-control" />
+
+    <label>Designation</label>
+    <input asp-for="Designation" class="form-control" />
+
+    <label>Mobile</label>
+    <input asp-for="Mobile" class="form-control" />
+
+    <label>Telephone</label>
+    <input asp-for="Telephone" class="form-control" />
+
+    <label>Fax Number</label>
+    <input asp-for="FaxNumber" class="form-control" />
+
+    <label>Address</label>
+    <textarea asp-for="Address" class="form-control"></textarea>
+
+    <label>Membership Type</label>
+    <select asp-for="MembershipType" class="form-control">
+        <option>Premium</option>
+        <option>Basic</option>
+        <option>Free</option>
+    </select>
+
+    <label>Payment Type</label>
+    <select asp-for="PaymentType" class="form-control">
+        <option>Monthly</option>
+        <option>Quarterly</option>
+    </select>
+
+    <p>Payment Amount: <b>@Model.PaymentAmount $</b></p>
+    <p>Payment Status: <b>@Model.PaymentStatus</b></p>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
