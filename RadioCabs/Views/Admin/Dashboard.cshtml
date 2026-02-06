@@ -1,0 +1,38 @@
+﻿@model RadioCabs.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Admin Dashboard</h2>
+    <a asp-action="Logout" class="btn btn-outline-dark">Logout</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col"><div class="card card-body text-center"><h5>Companies</h5><p class="display-6 mb-0">@Model.Companies.Count</p></div></div>
+    <div class="col"><div class="card card-body text-center"><h5>Drivers</h5><p class="display-6 mb-0">@Model.Drivers.Count</p></div></div>
+    <div class="col"><div class="card card-body text-center"><h5>Advertisements</h5><p class="display-6 mb-0">@Model.Advertisements.Count</p></div></div>
+    <div class="col"><div class="card card-body text-center"><h5>Feedback</h5><p class="display-6 mb-0">@Model.Feedbacks.Count</p></div></div>
+</div>
+
+<h4>Recent Companies</h4>
+<table class="table table-sm table-bordered">
+    <thead><tr><th>Name</th><th>ID</th><th>Payment Status</th></tr></thead>
+    <tbody>
+        @foreach (var company in Model.Companies.Take(10))
+        {
+            <tr><td>@company.CompanyName</td><td>@company.CompanyUniqueId</td><td>@company.PaymentStatus</td></tr>
+        }
+    </tbody>
+</table>
+
+<h4>Recent Drivers</h4>
+<table class="table table-sm table-bordered">
+    <thead><tr><th>Name</th><th>ID</th><th>Payment Status</th></tr></thead>
+    <tbody>
+        @foreach (var driver in Model.Drivers.Take(10))
+        {
+            <tr><td>@driver.DriverName</td><td>@driver.DriverUniqueId</td><td>@driver.PaymentStatus</td></tr>
+        }
+    </tbody>
+</table>

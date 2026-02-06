@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RadioCabs.Models
 {
@@ -26,6 +27,10 @@ namespace RadioCabs.Models
         public string Email { get; set; }
         public string MembershipType { get; set; }
         public string PaymentType { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal PaymentAmount { get; set; }
+
         public string? PaymentStatus { get; set; }
     }
 }

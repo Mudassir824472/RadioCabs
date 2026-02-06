@@ -136,24 +136,21 @@ namespace RadioCabs.Controllers
         }
         private int CalculatePaymentAmount(string paymentType, string membershipType)
         {
-            int amount = 0;
-
-            // Registration fees (from project table)
-            switch (paymentType)
+            // Rule 1: Free membership pays nothing
+            if (membershipType == "Free")
             {
-                case "Monthly":
-                    amount = 15;
-                    break;
-                case "Quarterly":
-                    amount = 40;
-                    break;
-                default:
-                    amount = 15; // fallback
-                    break;
+                return 0;
             }
 
-            return amount;
+            // Rule 2: Paid memberships
+            return paymentType switch
+            {
+                "Monthly" => 15,
+                "Quarterly" => 40,
+                _ => 0
+            };
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -176,21 +173,31 @@ namespace RadioCabs.Controllers
             company.FaxNumber = model.FaxNumber;
             company.Address = model.Address;
 
-            // Update membership & payment type
+            // Membership & payment
             company.MembershipType = model.MembershipType;
             company.PaymentType = model.PaymentType;
 
-            // Reset payment status on type change
-            company.PaymentStatus = "Pending";
+            // 🔑 Calculate amount FIRST
+            int amount = CalculatePaymentAmount(
+                model.PaymentType,
+                model.MembershipType
+            );
 
+            company.PaymentAmount = amount;
+
+            // 🔑 Set status correctly
+            company.PaymentStatus = amount == 0 ? "Free" : "Pending";
+
+            // Save everything together
             _context.SaveChanges();
 
-            // Update amount to display in View
-            model.PaymentAmount = CalculatePaymentAmount(model.PaymentType, model.MembershipType);
+            // Sync ViewModel
+            model.PaymentAmount = (int)company.PaymentAmount;
             model.PaymentStatus = company.PaymentStatus;
 
             return View(model);
         }
+
 
 
 

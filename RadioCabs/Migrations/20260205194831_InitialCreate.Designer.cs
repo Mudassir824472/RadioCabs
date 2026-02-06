@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RadioCabs.Models;
 
@@ -10,9 +11,11 @@ using RadioCabs.Models;
 namespace RadioCabs.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class RadioCabsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260205194831_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,6 +123,9 @@ namespace RadioCabs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("PaymentAmount")
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<string>("PaymentStatus")
                         .HasColumnType("nvarchar(max)");
 
@@ -154,6 +160,9 @@ namespace RadioCabs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -182,7 +191,6 @@ namespace RadioCabs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentType")
@@ -194,6 +202,8 @@ namespace RadioCabs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DriverId");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Drivers");
                 });
@@ -233,6 +243,15 @@ namespace RadioCabs.Migrations
                     b.HasKey("FeedbackId");
 
                     b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("RadioCabs.Models.Driver", b =>
+                {
+                    b.HasOne("RadioCabs.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

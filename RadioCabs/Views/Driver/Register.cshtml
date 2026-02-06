@@ -1,0 +1,38 @@
+﻿@model RadioCabs.Models.Driver
+@{
+    ViewData["Title"] = "Driver Registration";
+}
+
+<h2>Driver Registration</h2>
+
+<form asp-action="Register" method="post" class="border rounded p-3 col-lg-8">
+    @Html.AntiForgeryToken()
+    <div class="mb-2"><label>Driver Name</label><input asp-for="DriverName" class="form-control" /></div>
+    <div class="mb-2"><label>Driver ID</label><input asp-for="DriverUniqueId" class="form-control" /><span asp-validation-for="DriverUniqueId" class="text-danger"></span></div>
+    <div class="mb-2"><label>Password</label><input asp-for="Password" type="password" class="form-control" /></div>
+    <div class="mb-2"><label>Address</label><textarea asp-for="Address" class="form-control"></textarea></div>
+    <div class="mb-2"><label>City</label><input asp-for="City" class="form-control" /></div>
+    <div class="mb-2"><label>Mobile</label><input asp-for="Mobile" class="form-control" /></div>
+    <div class="mb-2"><label>Telephone</label><input asp-for="Telephone" class="form-control" /></div>
+    <div class="mb-2"><label>Email</label><input asp-for="Email" class="form-control" /></div>
+    <div class="mb-2"><label>Experience (years)</label><input asp-for="Experience" type="number" class="form-control" /></div>
+    <div class="mb-2"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
+    <div class="mb-2"><label>Payment Type</label><select asp-for="PaymentType" id="driverPaymentType" class="form-select"><option>Monthly</option><option>Quarterly</option></select></div>
+    <div class="alert alert-info py-2">Payable amount: <strong id="driverAmount">$10</strong></div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+    <a asp-action="Index" class="btn btn-link">Back to Driver Listing</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const driverType = document.getElementById('driverPaymentType');
+        const driverAmount = document.getElementById('driverAmount');
+        function updateDriverAmount() {
+            driverAmount.textContent = driverType.value === 'Quarterly' ? '$25' : '$10';
+        }
+        driverType.addEventListener('change', updateDriverAmount);
+        updateDriverAmount();
+    </script>
+}

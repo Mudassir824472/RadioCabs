@@ -19,6 +19,10 @@ namespace RadioCabs.Models
             modelBuilder.Entity<Company>()
                 .HasIndex(c => c.CompanyUniqueId)
                 .IsUnique();
+
+            modelBuilder.Entity<Driver>()
+                .HasIndex(d => d.DriverUniqueId)
+                .IsUnique();
         }
 
 

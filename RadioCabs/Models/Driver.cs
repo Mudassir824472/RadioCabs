@@ -16,14 +16,20 @@ namespace RadioCabs.Models
         [Required]
         public string Password { get; set; }
 
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Mobile { get; set; }
-        public string Telephone { get; set; }
-        public string Email { get; set; }
+        public string? Address { get; set; }
+        public string? City { get; set; }
+        public string? Mobile { get; set; }
+        public string? Telephone { get; set; }
+        public string? Email { get; set; }
         public int Experience { get; set; }
-        public string Description { get; set; }
-        public string PaymentType { get; set; }
-        public string PaymentStatus { get; set; }
+        public string? Description { get; set; }
+
+        public string? PaymentType { get; set; }
+        public string? PaymentStatus { get; set; }
+
+        public int? CompanyId { get; set; }
+        public Company? Company { get; set; }
     }
+
+
 }
