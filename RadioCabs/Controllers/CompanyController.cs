@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RadioCabs.Models;
+using Microsoft.EntityFrameworkCore;
 using RadioCabs.Helpers;
+using RadioCabs.Models;
 
 
 namespace RadioCabs.Controllers
@@ -46,22 +47,21 @@ namespace RadioCabs.Controllers
 
             // Set default payment status
             company.PaymentStatus = "Pending";
+            company.PaymentAmount = PaymentCalculator.GetCompanyAmount(company.PaymentType ?? "Monthly");
 
             // Save to database
             _context.Companies.Add(company);
             _context.SaveChanges();
 
-            return RedirectToAction("Success");
+            return RedirectToAction("Success", new { id = company.CompanyId });
         }
 
 
-        public IActionResult Success()
+        public IActionResult Success(int id)
         {
+            ViewData["CompanyId"] = id;
             return View();
         }
-
-
-
 
 
         //login
@@ -69,6 +69,7 @@ namespace RadioCabs.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(CompanyLoginViewModel model)
@@ -78,32 +79,24 @@ namespace RadioCabs.Controllers
                 return View(model);
             }
 
-            string hashedPassword = PasswordHelper.HashPassword(model.Password);
-
             var company = _context.Companies.FirstOrDefault(c =>
                 c.CompanyUniqueId == model.CompanyUniqueId &&
-                c.Password == hashedPassword);
+                c.Password == PasswordHelper.HashPassword(model.Password));
 
             if (company == null)
             {
-                ModelState.AddModelError("", "Invalid Company ID or Password");
+                ModelState.AddModelError("", "Invalid Company ID or Password.");
                 return View(model);
             }
 
-            // ✅ SET SESSION
+            // Set session
             HttpContext.Session.SetInt32("CompanyId", company.CompanyId);
-            HttpContext.Session.SetString("CompanyName", company.CompanyName);
+            HttpContext.Session.SetString("CompanyName", company.CompanyName ?? "");
 
             return RedirectToAction("Dashboard");
         }
 
-        //logout
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
-        //prfile
+
         public IActionResult Profile()
         {
             int? companyId = HttpContext.Session.GetInt32("CompanyId");
@@ -129,26 +122,10 @@ namespace RadioCabs.Controllers
                 MembershipType = company.MembershipType,
                 PaymentType = company.PaymentType,
                 PaymentStatus = company.PaymentStatus,
-                PaymentAmount = CalculatePaymentAmount(company.PaymentType, company.MembershipType)
+                PaymentAmount = PaymentCalculator.GetCompanyAmount(company.PaymentType ?? "Monthly")
             };
 
             return View(model);
-        }
-        private int CalculatePaymentAmount(string paymentType, string membershipType)
-        {
-            // Rule 1: Free membership pays nothing
-            if (membershipType == "Free")
-            {
-                return 0;
-            }
-
-            // Rule 2: Paid memberships
-            return paymentType switch
-            {
-                "Monthly" => 15,
-                "Quarterly" => 40,
-                _ => 0
-            };
         }
 
 
@@ -173,37 +150,25 @@ namespace RadioCabs.Controllers
             company.FaxNumber = model.FaxNumber;
             company.Address = model.Address;
 
-            // Membership & payment
+            // Update membership & payment type
             company.MembershipType = model.MembershipType;
             company.PaymentType = model.PaymentType;
 
-            // 🔑 Calculate amount FIRST
-            int amount = CalculatePaymentAmount(
-                model.PaymentType,
-                model.MembershipType
-            );
+            // Reset payment status on type change
+            company.PaymentStatus = "Pending";
+            company.PaymentAmount = PaymentCalculator.GetCompanyAmount(model.PaymentType ?? "Monthly");
 
-            company.PaymentAmount = amount;
-
-            // 🔑 Set status correctly
-            company.PaymentStatus = amount == 0 ? "Free" : "Pending";
-
-            // Save everything together
             _context.SaveChanges();
 
-            // Sync ViewModel
-            model.PaymentAmount = (int)company.PaymentAmount;
+            // Update amount to display in View
+            model.PaymentAmount = company.PaymentAmount;
             model.PaymentStatus = company.PaymentStatus;
 
             return View(model);
         }
 
 
-
-
-
-
-        //dahsboard
+        //dashboard
         public IActionResult Dashboard()
         {
             return View();

@@ -17,5 +17,6 @@ namespace RadioCabs.Models
         public string Description { get; set; }
         public string PaymentType { get; set; }
         public string PaymentStatus { get; set; }
+        public int PaymentAmount { get; set; }
     }
 }

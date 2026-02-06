@@ -1,0 +1,51 @@
+﻿@model RadioCabs.Models.PaymentPageViewModel
+@{
+    ViewData["Title"] = $"{Model.Section} Payment";
+}
+
+<h2>@Model.Section Payment</h2>
+
+<div class="border rounded p-3 col-lg-6">
+    <p><strong>@Model.Section Name:</strong> @Model.Name</p>
+    <p><strong>Current Status:</strong> @Model.PaymentStatus</p>
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Section" />
+        <input type="hidden" asp-for="EntityId" />
+
+        <div class="mb-2">
+            <label>Payment Type</label>
+            <select asp-for="PaymentType" id="paymentType" class="form-select">
+                <option>Monthly</option>
+                <option>Quarterly</option>
+            </select>
+        </div>
+        <div class="alert alert-info py-2">
+            Payable amount: <strong id="paymentAmount">$@Model.PaymentAmount</strong>
+        </div>
+        <button type="submit" class="btn btn-success">Pay Now</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const paymentType = document.getElementById('paymentType');
+        const paymentAmount = document.getElementById('paymentAmount');
+        const section = '@Model.Section';
+
+        function amountFor(type) {
+            if (section === 'Driver') {
+                return type === 'Quarterly' ? 25 : 10;
+            }
+            return type === 'Quarterly' ? 40 : 15;
+        }
+
+        function updateAmount() {
+            paymentAmount.textContent = `$${amountFor(paymentType.value)}`;
+        }
+
+        paymentType.addEventListener('change', updateAmount);
+        updateAmount();
+    </script>
+}

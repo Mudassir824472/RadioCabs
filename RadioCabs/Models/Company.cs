@@ -27,10 +27,7 @@ namespace RadioCabs.Models
         public string Email { get; set; }
         public string MembershipType { get; set; }
         public string PaymentType { get; set; }
-
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal PaymentAmount { get; set; }
-
         public string? PaymentStatus { get; set; }
+        public int PaymentAmount { get; set; }
     }
 }

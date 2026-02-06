@@ -54,10 +54,12 @@ namespace RadioCabs.Controllers
 
             model.Password = PasswordHelper.HashPassword(model.Password);
             model.PaymentStatus = "Pending";
+            model.PaymentAmount = PaymentCalculator.GetDriverAmount(model.PaymentType ?? "Monthly");
             _context.Drivers.Add(model);
             _context.SaveChanges();
 
             TempData["Success"] = "Driver registration completed successfully.";
+            TempData["DriverId"] = model.DriverId;
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,0 +1,22 @@
+﻿@model RadioCabs.Models.Feedback
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<h2>Feedback</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<form asp-action="Index" method="post" class="border rounded p-3 col-lg-8">
+    @Html.AntiForgeryToken()
+    <div class="mb-2"><label>Name</label><input asp-for="Name" class="form-control" /></div>
+    <div class="mb-2"><label>Mobile No.</label><input asp-for="Mobile" class="form-control" /></div>
+    <div class="mb-2"><label>Email</label><input asp-for="Email" class="form-control" /></div>
+    <div class="mb-2"><label>City</label><input asp-for="City" class="form-control" /></div>
+    <div class="mb-2"><label>Type</label><select asp-for="Type" class="form-select"><option>Complaint</option><option>Suggestion</option><option>Compliment</option></select></div>
+    <div class="mb-2"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+</form>

@@ -1,8 +1,75 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="p-4 p-md-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-3">
+            <h1 class="display-5 fw-bold">RadioCabs.in</h1>
+            <p class="col-md-10 fs-5">
+                RadioCabs.in is a city-wise directory of radio taxi operators, drivers, and transport services across India.
+                We help users discover safe, cost-effective, and personalized cab services available round-the-clock.
+            </p>
+            <p class="mb-0">Membership options: <strong>Premium</strong>, <strong>Basic</strong>, and <strong>Free</strong>.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Listing</h5>
+                    <p class="card-text">Register your cab company and get discovered by users searching for taxi services.</p>
+                    <a asp-controller="Listing" asp-action="Index" class="btn btn-primary">Open Listing</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Drivers</h5>
+                    <p class="card-text">Register drivers and let companies search for talent according to their requirements.</p>
+                    <a asp-controller="Driver" asp-action="Index" class="btn btn-primary">Open Drivers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Advertise</h5>
+                    <p class="card-text">Submit your advertisement request to promote your organization online.</p>
+                    <a asp-controller="Advertise" asp-action="Index" class="btn btn-primary">Advertise Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <h3>Payment Plans</h3>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Section</th>
+                        <th>Monthly</th>
+                        <th>Quarterly</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Registration</td><td>$15</td><td>$40</td></tr>
+                    <tr><td>Driver</td><td>$10</td><td>$25</td></tr>
+                    <tr><td>Advertisement</td><td>$15</td><td>$40</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <h3>Authentication</h3>
+            <div class="d-grid gap-2">
+                <a asp-controller="Company" asp-action="Login" class="btn btn-outline-primary">Registered Unit Login</a>
+                <a asp-controller="Admin" asp-action="Login" class="btn btn-outline-dark">Admin Login</a>
+                <a asp-controller="Feedback" asp-action="Index" class="btn btn-outline-secondary">Share Feedback</a>
+            </div>
+        </div>
+    </div>

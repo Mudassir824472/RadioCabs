@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RadioCabs.Helpers;
 using RadioCabs.Models;
 
 namespace RadioCabs.Controllers
@@ -54,10 +55,12 @@ namespace RadioCabs.Controllers
             model.Advertisement.FaxNumber = company.FaxNumber;
             model.Advertisement.Email = company.Email;
             model.Advertisement.PaymentStatus = "Pending";
+            model.Advertisement.PaymentAmount = PaymentCalculator.GetAdvertisementAmount(model.Advertisement.PaymentType ?? "Monthly");
 
             _context.Advertisements.Add(model.Advertisement);
             _context.SaveChanges();
             TempData["Success"] = "Advertisement request submitted.";
+            TempData["AdvertisementId"] = model.Advertisement.AdvertisementId;
             return RedirectToAction(nameof(Index));
         }
     }

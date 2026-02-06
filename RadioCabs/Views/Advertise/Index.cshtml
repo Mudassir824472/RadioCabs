@@ -9,6 +9,14 @@
     <div class="alert alert-success">@TempData["Success"]</div>
 }
 
+@if (TempData["AdvertisementId"] != null)
+{
+    <div class="alert alert-info">
+        Complete payment for your advertisement request:
+        <a asp-controller="Payment" asp-action="Advertisement" asp-route-id="@(TempData["AdvertisementId"])" class="btn btn-sm btn-success ms-2">Pay Now</a>
+    </div>
+}
+
 <form asp-action="Index" method="post" class="border rounded p-3 col-lg-8">
     @Html.AntiForgeryToken()
     <div class="mb-2">

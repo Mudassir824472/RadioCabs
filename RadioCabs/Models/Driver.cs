@@ -15,7 +15,7 @@ namespace RadioCabs.Models
 
         [Required]
         public string Password { get; set; }
-
+        public string ContactPerson { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? Mobile { get; set; }
@@ -26,6 +26,7 @@ namespace RadioCabs.Models
 
         public string? PaymentType { get; set; }
         public string? PaymentStatus { get; set; }
+        public int PaymentAmount { get; set; }
 
         public int? CompanyId { get; set; }
         public Company? Company { get; set; }
