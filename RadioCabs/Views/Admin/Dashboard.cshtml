@@ -1,38 +1,106 @@
-﻿@model RadioCabs.Models.AdminDashboardViewModel
-@{
-    ViewData["Title"] = "Admin Dashboard";
-}
+﻿@model AdminDashboardViewModel
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Admin Dashboard</h2>
-    <a asp-action="Logout" class="btn btn-outline-dark">Logout</a>
+<div class="dashboard-header mb-4">
+    <h1>Admin Dashboard</h1>
+    <p class="text-muted">Welcome to RadioCabs Admin Panel</p>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col"><div class="card card-body text-center"><h5>Companies</h5><p class="display-6 mb-0">@Model.Companies.Count</p></div></div>
-    <div class="col"><div class="card card-body text-center"><h5>Drivers</h5><p class="display-6 mb-0">@Model.Drivers.Count</p></div></div>
-    <div class="col"><div class="card card-body text-center"><h5>Advertisements</h5><p class="display-6 mb-0">@Model.Advertisements.Count</p></div></div>
-    <div class="col"><div class="card card-body text-center"><h5>Feedback</h5><p class="display-6 mb-0">@Model.Feedbacks.Count</p></div></div>
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Companies</h5>
+                <p class="card-text display-4">@Model.TotalCompanies</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Total Drivers</h5>
+                <p class="card-text display-4">@Model.TotalDrivers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Total Advertisements</h5>
+                <p class="card-text display-4">@Model.TotalAdvertisements</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Total Feedbacks</h5>
+                <p class="card-text display-4">@Model.TotalFeedbacks</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h4>Recent Companies</h4>
-<table class="table table-sm table-bordered">
-    <thead><tr><th>Name</th><th>ID</th><th>Payment Status</th></tr></thead>
-    <tbody>
-        @foreach (var company in Model.Companies.Take(10))
-        {
-            <tr><td>@company.CompanyName</td><td>@company.CompanyUniqueId</td><td>@company.PaymentStatus</td></tr>
-        }
-    </tbody>
-</table>
+<!-- Payment & Membership Statistics -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Payment Status Overview</div>
+            <div class="card-body">
+                <p><strong>Pending Payments:</strong> <span class="badge badge-warning">@Model.PendingPayments</span></p>
+                <p><strong>Completed Payments:</strong> <span class="badge badge-success">@Model.CompletedPayments</span></p>
+                <p><strong>Total Revenue:</strong> <span class="badge badge-primary">${{Model.TotalRevenue}}</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Membership Distribution</div>
+            <div class="card-body">
+                <p><strong>Premium Members:</strong> <span class="badge badge-success">@Model.PremiumMembers</span></p>
+                <p><strong>Basic Members:</strong> <span class="badge badge-info">@Model.BasicMembers</span></p>
+                <p><strong>Free Members:</strong> <span class="badge badge-secondary">@Model.FreeMembers</span></p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h4>Recent Drivers</h4>
-<table class="table table-sm table-bordered">
-    <thead><tr><th>Name</th><th>ID</th><th>Payment Status</th></tr></thead>
-    <tbody>
-        @foreach (var driver in Model.Drivers.Take(10))
-        {
-            <tr><td>@driver.DriverName</td><td>@driver.DriverUniqueId</td><td>@driver.PaymentStatus</td></tr>
-        }
-    </tbody>
-</table>
+<!-- Recent Companies Table -->
+<div class="card mb-4">
+    <div class="card-header">Recent Companies</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Email</th>
+                    <th>Membership</th>
+                    <th>Payment Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model.Companies.Take(5))
+                {
+                    <tr>
+                        <td>@company.CompanyName</td>
+                        <td>@company.Email</td>
+                        <td><span class="badge badge-info">@company.MembershipType</span></td>
+                        <td>
+                            <span class="badge @(company.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                @company.PaymentStatus
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/Admin/ViewCompanyDetails/@company.CompanyId" class="btn btn-sm btn-info">View</a>
+                            <a href="/Admin/EditCompany/@company.CompanyId" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="/Admin/ManageCompanies" class="btn btn-primary">View All Companies</a>
+    </div>
+</div>
