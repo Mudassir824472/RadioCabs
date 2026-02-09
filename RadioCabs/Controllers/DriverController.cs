@@ -37,6 +37,58 @@ namespace RadioCabs.Controllers
             return View(new Driver());
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(DriverLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var passwordHash = PasswordHelper.HashPassword(model.Password);
+            var driver = _context.Drivers.FirstOrDefault(d =>
+                d.DriverUniqueId == model.DriverUniqueId &&
+                d.Password == passwordHash);
+
+            if (driver == null)
+            {
+                ModelState.AddModelError("", "Invalid Driver ID or Password.");
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("DriverId", driver.DriverId);
+            HttpContext.Session.SetString("DriverName", driver.DriverName ?? "");
+
+            return RedirectToAction(nameof(Dashboard));
+        }
+
+        public IActionResult Dashboard()
+        {
+            var driverId = HttpContext.Session.GetInt32("DriverId");
+            if (driverId == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            ViewBag.DriverName = HttpContext.Session.GetString("DriverName");
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("DriverId");
+            HttpContext.Session.Remove("DriverName");
+            return RedirectToAction(nameof(Login));
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(Driver model)

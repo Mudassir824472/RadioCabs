@@ -21,6 +21,35 @@ namespace RadioCabs.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("RadioCabs.Models.AdminUser", b =>
+            {
+                b.Property<int>("AdminUserId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminUserId"));
+
+                b.Property<bool>("IsActive")
+                    .HasColumnType("bit");
+
+                b.Property<string>("PasswordHash")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Username")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar(100)");
+
+                b.HasKey("AdminUserId");
+
+                b.HasIndex("Username")
+                    .IsUnique();
+
+                b.ToTable("AdminUsers");
+            });
+
+
             modelBuilder.Entity("RadioCabs.Models.Advertisement", b =>
                 {
                     b.Property<int>("AdvertisementId")

@@ -1,0 +1,22 @@
+﻿@model RadioCabs.Models.DriverLoginViewModel
+
+@{
+    ViewData["Title"] = "Driver Login";
+}
+
+<h2>Driver Login</h2>
+
+<form asp-action="Login" method="post" class="col-lg-4 border rounded p-3">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label asp-for="DriverUniqueId" class="form-label"></label>
+        <input asp-for="DriverUniqueId" class="form-control" />
+        <span asp-validation-for="DriverUniqueId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <button class="btn btn-dark" type="submit">Login</button>
+</form>

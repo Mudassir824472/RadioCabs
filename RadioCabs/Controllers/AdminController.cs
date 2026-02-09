@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RadioCabs.Helpers;
 using RadioCabs.Models;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace RadioCabs.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AdminController(ApplicationContext context)
-        {
+        public AdminController(ApplicationContext context, IConfiguration configuration)
+            {
             _context = context;
+            _configuration = configuration;
         }
 
         // ==================== AUTHENTICATION ====================
@@ -24,18 +27,56 @@ namespace RadioCabs.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string username, string password)
         {
-            // TODO: Replace with secure credential management (database table or environment variables)
-            if (username == "admin" && password == "admin123")
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
+                ViewData["Error"] = "Username and password are required.";
+                return View();
+            }
+            var normalizedUsername = username.Trim();
+            var passwordHash = PasswordHelper.HashPassword(password);
+
+            var adminUser = _context.AdminUsers.FirstOrDefault(a => a.Username == normalizedUsername && a.IsActive);
+            if (adminUser != null)
+            {
+                if (adminUser.PasswordHash != passwordHash)
+                {
+                    ViewData["Error"] = "Invalid admin credentials.";
+                    return View();
+                }
                 HttpContext.Session.SetString("IsAdmin", "true");
                 HttpContext.Session.SetString("AdminUsername", username);
+                HttpContext.Session.SetString("AdminUsername", adminUser.Username);
                 return RedirectToAction(nameof(Dashboard));
+            }
+            if (!_context.AdminUsers.Any())
+            {
+                var bootstrapUsername = _configuration["AdminBootstrap:Username"];
+                var bootstrapPasswordHash = _configuration["AdminBootstrap:PasswordHash"];
+
+                if (!string.IsNullOrWhiteSpace(bootstrapUsername) &&
+                    !string.IsNullOrWhiteSpace(bootstrapPasswordHash) &&
+                    normalizedUsername == bootstrapUsername &&
+                    passwordHash == bootstrapPasswordHash)
+                {
+                    var bootstrapAdmin = new AdminUser
+                    {
+                        Username = normalizedUsername,
+                        PasswordHash = bootstrapPasswordHash,
+                        IsActive = true
+                    };
+
+                    _context.AdminUsers.Add(bootstrapAdmin);
+                    _context.SaveChanges();
+
+                    HttpContext.Session.SetString("IsAdmin", "true");
+                    HttpContext.Session.SetString("AdminUsername", bootstrapAdmin.Username);
+                    return RedirectToAction(nameof(Dashboard));
+                }
             }
 
             ViewData["Error"] = "Invalid admin credentials.";
             return View();
         }
-
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("IsAdmin");

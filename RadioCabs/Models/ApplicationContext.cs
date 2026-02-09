@@ -13,6 +13,7 @@ namespace RadioCabs.Models
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<AdminUser> AdminUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,10 @@ namespace RadioCabs.Models
 
             modelBuilder.Entity<Driver>()
                 .HasIndex(d => d.DriverUniqueId)
+                .IsUnique();
+
+            modelBuilder.Entity<AdminUser>()
+                .HasIndex(a => a.Username)
                 .IsUnique();
         }
 
