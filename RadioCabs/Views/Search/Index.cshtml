@@ -1,0 +1,129 @@
+﻿@model RadioCabs.Models.SearchResultsViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Search</h2>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-8">
+        <label class="form-label">Search term</label>
+        <input asp-for="SearchTerm" class="form-control" placeholder="Company, driver, advertisement, or feedback" />
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary w-100">Search</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+{
+    <div class="mb-4">
+        <h4>Companies (@Model.Companies.Count)</h4>
+        <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0">
+                <thead class="table-light"><tr><th>Company</th><th>Contact</th><th>Membership</th></tr></thead>
+                <tbody>
+                    @if (!Model.Companies.Any())
+                    {
+                        <tr><td colspan="3" class="text-center text-muted py-2">No companies found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var company in Model.Companies)
+                        {
+                            <tr>
+                                <td>@company.CompanyName</td>
+                                <td>@company.Mobile<br /><small>@company.Email</small></td>
+                                <td>@company.MembershipType</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h4>Drivers (@Model.Drivers.Count)</h4>
+        <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0">
+                <thead class="table-light"><tr><th>Name</th><th>City</th><th>Experience</th><th>Contact</th></tr></thead>
+                <tbody>
+                    @if (!Model.Drivers.Any())
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-2">No drivers found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var driver in Model.Drivers)
+                        {
+                            <tr>
+                                <td>@driver.DriverName</td>
+                                <td>@driver.City</td>
+                                <td>@driver.Experience years</td>
+                                <td>@driver.Mobile<br /><small>@driver.Email</small></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h4>Advertisements (@Model.Advertisements.Count)</h4>
+        <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0">
+                <thead class="table-light"><tr><th>Company</th><th>Description</th><th>Contact</th></tr></thead>
+                <tbody>
+                    @if (!Model.Advertisements.Any())
+                    {
+                        <tr><td colspan="3" class="text-center text-muted py-2">No advertisements found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var advertisement in Model.Advertisements)
+                        {
+                            <tr>
+                                <td>@advertisement.CompanyName</td>
+                                <td>@advertisement.Description</td>
+                                <td>@advertisement.Mobile<br /><small>@advertisement.Email</small></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h4>Feedback (@Model.Feedbacks.Count)</h4>
+        <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0">
+                <thead class="table-light"><tr><th>Name</th><th>Type</th><th>Contact</th><th>Message</th></tr></thead>
+                <tbody>
+                    @if (!Model.Feedbacks.Any())
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-2">No feedback found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var feedback in Model.Feedbacks)
+                        {
+                            <tr>
+                                <td>@feedback.Name</td>
+                                <td>@feedback.Type</td>
+                                <td>@feedback.Mobile<br /><small>@feedback.Email</small></td>
+                                <td>@feedback.Description</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-muted">Enter a term above to search across companies, drivers, advertisements, and feedback.</p>
+}

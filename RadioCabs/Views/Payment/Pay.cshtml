@@ -5,6 +5,11 @@
 
 <h2>@Model.Section Payment</h2>
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="border rounded p-3 col-lg-6">
     <p><strong>@Model.Section Name:</strong> @Model.Name</p>
     <p><strong>Current Status:</strong> @Model.PaymentStatus</p>

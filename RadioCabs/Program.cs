@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RadioCabs.Models;
+using RadioCabs.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("Stripe"));
+builder.Services.AddHttpClient<StripePaymentGateway>();
+builder.Services.AddScoped<IPaymentGateway, StripePaymentGateway>();
 
 
 var app = builder.Build();

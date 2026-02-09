@@ -14,17 +14,39 @@ namespace RadioCabs.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string searchTerm = "")
+        public IActionResult Index(string searchTerm = "", string city = "", string membershipType = "", string paymentStatus = "")
         {
             var query = _context.Companies.AsQueryable();
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = query.Where(c => c.CompanyName.Contains(searchTerm) || c.CitySafe().Contains(searchTerm));
+                query = query.Where(c =>
+                    c.CompanyName.Contains(searchTerm) ||
+                    c.ContactPerson.Contains(searchTerm) ||
+                    c.Email.Contains(searchTerm) ||
+                    c.Mobile.Contains(searchTerm) ||
+                    c.CitySafe().Contains(searchTerm));
+            }
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                query = query.Where(c => c.CitySafe().Contains(city));
+            }
+
+            if (!string.IsNullOrWhiteSpace(membershipType))
+            {
+                query = query.Where(c => c.MembershipType == membershipType);
+            }
+
+            if (!string.IsNullOrWhiteSpace(paymentStatus))
+            {
+                query = query.Where(c => c.PaymentStatus == paymentStatus);
             }
 
             var model = new ListingPageViewModel
             {
                 SearchTerm = searchTerm,
+                City = city,
+                MembershipType = membershipType,
+                PaymentStatus = paymentStatus,
                 Results = query.OrderBy(c => c.CompanyName).ToList(),
                 Registration = new Company()
             };

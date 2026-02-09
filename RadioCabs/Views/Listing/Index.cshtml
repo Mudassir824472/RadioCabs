@@ -34,9 +34,35 @@
 
     <div class="col-lg-6">
         <h4>Search Registered Companies</h4>
-        <form method="get" class="d-flex gap-2 mb-3">
-            <input name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by company or location" />
-            <button type="submit" class="btn btn-outline-primary">Search</button>
+        <form method="get" class="row g-2 align-items-end mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Search</label>
+                <input asp-for="SearchTerm" class="form-control" placeholder="Company, contact, email, or phone" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">City/Address</label>
+                <input asp-for="City" class="form-control" placeholder="City or address" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Membership</label>
+                <select asp-for="MembershipType" class="form-select">
+                    <option value="">All</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Free">Free</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Payment Status</label>
+                <select asp-for="PaymentStatus" class="form-select">
+                    <option value="">All</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-outline-primary w-100">Search</button>
+            </div>
         </form>
 
         <div class="table-responsive border rounded">

@@ -23,9 +23,30 @@
     <a asp-action="Register" class="btn btn-primary">Register New Driver</a>
 </div>
 
-<form method="get" class="d-flex gap-2 mb-3">
-    <input name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by name or city" />
-    <button type="submit" class="btn btn-outline-primary">Search</button>
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input asp-for="SearchTerm" class="form-control" placeholder="Name, city, email, or phone" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">City</label>
+        <input asp-for="City" class="form-control" placeholder="City" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Min Experience</label>
+        <input asp-for="MinExperience" class="form-control" type="number" min="0" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Payment</label>
+        <select asp-for="PaymentStatus" class="form-select">
+            <option value="">All</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </div>
 </form>
 
 <div class="table-responsive border rounded">

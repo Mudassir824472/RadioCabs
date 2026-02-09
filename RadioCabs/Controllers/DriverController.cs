@@ -14,17 +14,39 @@ namespace RadioCabs.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string searchTerm = "")
+        public IActionResult Index(string searchTerm = "", string city = "", int? minExperience = null, string paymentStatus = "")
         {
             var query = _context.Drivers.AsQueryable();
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = query.Where(d => d.DriverName.Contains(searchTerm) || d.City.Contains(searchTerm));
+                query = query.Where(d =>
+                    d.DriverName.Contains(searchTerm) ||
+                    (d.City != null && d.City.Contains(searchTerm)) ||
+                    (d.Email != null && d.Email.Contains(searchTerm)) ||
+                    (d.Mobile != null && d.Mobile.Contains(searchTerm)));
             }
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                query = query.Where(d => d.City != null && d.City.Contains(city));
+            }
+
+            if (minExperience.HasValue && minExperience.Value > 0)
+            {
+                query = query.Where(d => d.Experience >= minExperience.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(paymentStatus))
+            {
+                query = query.Where(d => d.PaymentStatus == paymentStatus);
+            }
+        
 
             var model = new DriverPageViewModel
             {
                 SearchTerm = searchTerm,
+                City = city,
+                MinExperience = minExperience,
+                PaymentStatus = paymentStatus,
                 Results = query.OrderBy(d => d.DriverName).ToList()
             };
 
