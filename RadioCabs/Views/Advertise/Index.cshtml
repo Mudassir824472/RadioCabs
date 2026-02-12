@@ -19,6 +19,7 @@
 
 <form asp-action="Index" method="post" class="border rounded p-3 col-lg-8">
     @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
     <div class="mb-2">
         <label>Registered Company</label>
         <select asp-for="CompanyId" class="form-select">
@@ -30,12 +31,28 @@
         </select>
         <span asp-validation-for="CompanyId" class="text-danger"></span>
     </div>
-    <div class="mb-2"><label>Designation</label><input asp-for="Advertisement.Designation" class="form-control" /></div>
-    <div class="mb-2"><label>Description</label><textarea asp-for="Advertisement.Description" class="form-control"></textarea></div>
-    <div class="mb-2"><label>Payment Type</label><select asp-for="Advertisement.PaymentType" id="adPaymentType" class="form-select"><option>Monthly</option><option>Quarterly</option></select></div>
+    <div class="mb-2">
+        <label asp-for="Advertisement.Designation"></label>
+        <input asp-for="Advertisement.Designation" class="form-control" />
+        <span asp-validation-for="Advertisement.Designation" class="text-danger"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Advertisement.Description"></label>
+        <textarea asp-for="Advertisement.Description" class="form-control"></textarea>
+        <span asp-validation-for="Advertisement.Description" class="text-danger"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Advertisement.PaymentType"></label>
+        <select asp-for="Advertisement.PaymentType" id="adPaymentType" class="form-select">
+            <option>Monthly</option>
+            <option>Quarterly</option>
+        </select>
+        <span asp-validation-for="Advertisement.PaymentType" class="text-danger"></span>
+    </div>
     <div class="alert alert-info py-2">Payable amount: <strong id="adAmount">$15</strong></div>
     <p class="text-muted small">Contact details will be pulled from the selected company profile.</p>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" name="submitAction" value="SubmitOnly" class="btn btn-primary">Submit</button>
+    <button type="submit" name="submitAction" value="PayNow" class="btn btn-success">Submit & Pay Now</button>
     <button type="reset" class="btn btn-secondary">Reset</button>
 </form>
 

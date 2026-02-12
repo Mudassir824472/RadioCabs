@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using RadioCabs.Helpers;
 using RadioCabs.Models;
 
@@ -26,8 +27,9 @@ namespace RadioCabs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(AdvertisePageViewModel model)
+        public IActionResult Index(AdvertisePageViewModel model, string submitAction)
         {
+            model.Advertisement ??= new Advertisement();
             model.Companies = _context.Companies.OrderBy(c => c.CompanyName).ToList();
 
             if (model.CompanyId == null)
@@ -43,10 +45,6 @@ namespace RadioCabs.Controllers
                 return View(model);
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
 
             model.Advertisement.CompanyName = company.CompanyName;
             model.Advertisement.Address = company.Address;
@@ -57,8 +55,29 @@ namespace RadioCabs.Controllers
             model.Advertisement.PaymentStatus = "Pending";
             model.Advertisement.PaymentAmount = PaymentCalculator.GetAdvertisementAmount(model.Advertisement.PaymentType ?? "Monthly");
 
+            ModelState.Remove("Advertisement.CompanyName");
+            ModelState.Remove("Advertisement.Address");
+            ModelState.Remove("Advertisement.Mobile");
+            ModelState.Remove("Advertisement.Telephone");
+            ModelState.Remove("Advertisement.FaxNumber");
+            ModelState.Remove("Advertisement.Email");
+            ModelState.Remove("Advertisement.PaymentStatus");
+            ModelState.Remove("Advertisement.PaymentAmount");
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             _context.Advertisements.Add(model.Advertisement);
             _context.SaveChanges();
+
+            if (string.Equals(submitAction, "PayNow", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Advertisement", "Payment", new { id = model.Advertisement.AdvertisementId });
+            }
+
+
             TempData["Success"] = "Advertisement request submitted.";
             TempData["AdvertisementId"] = model.Advertisement.AdvertisementId;
             return RedirectToAction(nameof(Index));
