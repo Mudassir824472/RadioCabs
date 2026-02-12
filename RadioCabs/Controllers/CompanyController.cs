@@ -171,7 +171,26 @@ namespace RadioCabs.Controllers
         //dashboard
         public IActionResult Dashboard()
         {
-            return View();
+            int? companyId = HttpContext.Session.GetInt32("CompanyId");
+            if (companyId == null)
+                return RedirectToAction("Login");
+
+            var company = _context.Companies.Find(companyId.Value);
+            if (company == null)
+            {
+                HttpContext.Session.Remove("CompanyId");
+                HttpContext.Session.Remove("CompanyName");
+                return RedirectToAction("Login");
+            }
+
+            return View(company);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("CompanyId");
+            HttpContext.Session.Remove("CompanyName");
+            return RedirectToAction("Login");
         }
 
 

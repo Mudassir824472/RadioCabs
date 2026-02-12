@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Driver>
+@{
+    ViewData["Title"] = "Manage Drivers";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Manage Drivers</h2>
+    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Driver Name</th>
+                    <th>Driver ID</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>City</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No drivers found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var driver in Model)
+                    {
+                        <tr>
+                            <td>@driver.DriverName</td>
+                            <td>@driver.DriverUniqueId</td>
+                            <td>@(driver.Email ?? "-")</td>
+                            <td>@(driver.Mobile ?? "-")</td>
+                            <td>@(driver.City ?? "-")</td>
+                            <td>
+                                <span class="badge @(driver.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                    @(driver.PaymentStatus ?? "Pending")
+                                </span>
+                            </td>
+                            <td class="d-flex gap-1">
+                                <a asp-action="ViewDriverDetails" asp-route-id="@driver.DriverId" class="btn btn-sm btn-info">View</a>
+                                <a asp-action="EditDriver" asp-route-id="@driver.DriverId" class="btn btn-sm btn-warning">Edit</a>
+                                <form asp-action="DeleteDriver" asp-route-id="@driver.DriverId" method="post" onsubmit="return confirm('Delete this driver?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

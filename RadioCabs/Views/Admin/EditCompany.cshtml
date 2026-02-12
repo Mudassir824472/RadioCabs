@@ -1,0 +1,107 @@
+﻿@model Company
+@{
+    ViewData["Title"] = "Edit Company";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Edit Company</h2>
+    <a asp-action="ManageCompanies" class="btn btn-secondary">Back to Manage Companies</a>
+</div>
+
+<form asp-action="EditCompany" asp-route-id="@Model.CompanyId" method="post">
+    @Html.AntiForgeryToken()
+    <input asp-for="CompanyId" type="hidden" />
+    <input asp-for="CompanyUniqueId" type="hidden" />
+    <input asp-for="Password" type="hidden" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CompanyName" class="form-label"></label>
+                    <input asp-for="CompanyName" class="form-control" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Company ID</label>
+                    <input class="form-control" value="@Model.CompanyUniqueId" readonly />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ContactPerson" class="form-label"></label>
+                    <input asp-for="ContactPerson" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Designation" class="form-label"></label>
+                    <input asp-for="Designation" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Mobile" class="form-label"></label>
+                    <input asp-for="Mobile" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Telephone" class="form-label"></label>
+                    <input asp-for="Telephone" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FaxNumber" class="form-label"></label>
+                    <input asp-for="FaxNumber" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MembershipType" class="form-label"></label>
+                    <select asp-for="MembershipType" class="form-control">
+                        <option value="Premium">Premium</option>
+                        <option value="Basic">Basic</option>
+                        <option value="Free">Free</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="PaymentType" class="form-label"></label>
+                    <select asp-for="PaymentType" class="form-control">
+                        <option value="Monthly">Monthly</option>
+                        <option value="Quarterly">Quarterly</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PaymentStatus" class="form-label"></label>
+                <select asp-for="PaymentStatus" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="ViewCompanyDetails" asp-route-id="@Model.CompanyId" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

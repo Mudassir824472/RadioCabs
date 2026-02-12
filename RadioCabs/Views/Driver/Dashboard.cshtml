@@ -1,9 +1,48 @@
-﻿@{
+﻿﻿
+@model Driver
+@{
     ViewData["Title"] = "Driver Dashboard";
 }
 
-<h2>Welcome, @ViewBag.DriverName</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Welcome, @Model.DriverName</h2>
+    <a asp-action="Logout" class="btn btn-outline-danger">Logout</a>
+</div>
 
-<p>You are logged in successfully 🎉</p>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
 
-<a asp-action="Logout" class="btn btn-danger">Logout</a>
+<div class="card mb-4">
+    <div class="card-header">Your Profile</div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Driver ID</dt>
+            <dd class="col-sm-8">@Model.DriverUniqueId</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@(Model.Email ?? "-")</dd>
+
+            <dt class="col-sm-4">Mobile</dt>
+            <dd class="col-sm-8">@(Model.Mobile ?? "-")</dd>
+
+            <dt class="col-sm-4">City</dt>
+            <dd class="col-sm-8">@(Model.City ?? "-")</dd>
+
+            <dt class="col-sm-4">Experience</dt>
+            <dd class="col-sm-8">@Model.Experience years</dd>
+
+            <dt class="col-sm-4">Payment Status</dt>
+            <dd class="col-sm-8">@(Model.PaymentStatus ?? "Pending")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
+    <form asp-action="DeleteProfile" method="post" onsubmit="return confirm('Are you sure you want to delete your profile? This cannot be undone.');">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Delete Profile</button>
+    </form>
+</div>

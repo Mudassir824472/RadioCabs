@@ -1,5 +1,36 @@
-﻿<h2>Welcome, @ViewBag.CompanyName</h2>
+﻿@model Company
+@{
+    ViewData["Title"] = "Company Dashboard";
+}
 
-<p>You are logged in successfully 🎉</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Welcome, @Model.CompanyName</h2>
+    <a asp-action="Logout" class="btn btn-outline-danger">Logout</a>
+</div>
 
-<a asp-action="Logout" class="btn btn-danger">Logout</a>
+<div class="card mb-3">
+    <div class="card-header">Company Profile Summary</div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Company ID</dt>
+            <dd class="col-sm-8">@Model.CompanyUniqueId</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Contact Person</dt>
+            <dd class="col-sm-8">@(Model.ContactPerson ?? "-")</dd>
+
+            <dt class="col-sm-4">Membership Type</dt>
+            <dd class="col-sm-8">@Model.MembershipType</dd>
+
+            <dt class="col-sm-4">Payment Type</dt>
+            <dd class="col-sm-8">@Model.PaymentType</dd>
+
+            <dt class="col-sm-4">Payment Status</dt>
+            <dd class="col-sm-8">@(Model.PaymentStatus ?? "Pending")</dd>
+        </dl>
+    </div>
+</div>
+
+<a asp-action="Profile" class="btn btn-primary">View / Edit Full Profile</a>

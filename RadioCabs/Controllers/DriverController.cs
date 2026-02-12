@@ -99,9 +99,132 @@ namespace RadioCabs.Controllers
                 return RedirectToAction(nameof(Login));
             }
 
-            ViewBag.DriverName = HttpContext.Session.GetString("DriverName");
-            return View();
+            var driver = _context.Drivers.Find(driverId.Value);
+            if (driver == null)
+            {
+                HttpContext.Session.Remove("DriverId");
+                HttpContext.Session.Remove("DriverName");
+                return RedirectToAction(nameof(Login));
+            }
+
+            return View(driver);
         }
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            var driverId = HttpContext.Session.GetInt32("DriverId");
+            if (driverId == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var driver = _context.Drivers.Find(driverId.Value);
+            if (driver == null)
+            {
+                HttpContext.Session.Remove("DriverId");
+                HttpContext.Session.Remove("DriverName");
+                return RedirectToAction(nameof(Login));
+            }
+
+            var model = new DriverProfileEditViewModel
+            {
+                DriverId = driver.DriverId,
+                DriverName = driver.DriverName,
+                DriverUniqueId = driver.DriverUniqueId,
+                ContactPerson = driver.ContactPerson,
+                Address = driver.Address,
+                City = driver.City,
+                Mobile = driver.Mobile,
+                Telephone = driver.Telephone,
+                Email = driver.Email,
+                Experience = driver.Experience,
+                Description = driver.Description
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditProfile(DriverProfileEditViewModel model)
+        {
+            var driverId = HttpContext.Session.GetInt32("DriverId");
+            if (driverId == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            if (driverId.Value != model.DriverId)
+            {
+                return Forbid();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var existingDriver = _context.Drivers.Find(driverId.Value);
+            if (existingDriver == null)
+            {
+                HttpContext.Session.Remove("DriverId");
+                HttpContext.Session.Remove("DriverName");
+                return RedirectToAction(nameof(Login));
+            }
+
+            existingDriver.DriverName = model.DriverName;
+            existingDriver.ContactPerson = model.ContactPerson;
+            existingDriver.Address = model.Address;
+            existingDriver.City = model.City;
+            existingDriver.Mobile = model.Mobile;
+            existingDriver.Telephone = model.Telephone;
+            existingDriver.Email = model.Email;
+            existingDriver.Experience = model.Experience;
+            existingDriver.Description = model.Description;
+
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                existingDriver.Password = PasswordHelper.HashPassword(model.NewPassword);
+            }
+
+            _context.SaveChanges();
+
+            HttpContext.Session.SetString("DriverName", existingDriver.DriverName ?? string.Empty);
+            TempData["Success"] = "Your profile has been updated successfully.";
+            return RedirectToAction(nameof(Dashboard));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteProfile()
+        {
+            var driverId = HttpContext.Session.GetInt32("DriverId");
+            if (driverId == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var driver = _context.Drivers.Find(driverId.Value);
+            if (driver == null)
+            {
+                HttpContext.Session.Remove("DriverId");
+                HttpContext.Session.Remove("DriverName");
+                return RedirectToAction(nameof(Login));
+            }
+
+            _context.Drivers.Remove(driver);
+            _context.SaveChanges();
+
+            HttpContext.Session.Remove("DriverId");
+            HttpContext.Session.Remove("DriverName");
+            TempData["Success"] = "Your driver profile has been deleted.";
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         public IActionResult Logout()
         {

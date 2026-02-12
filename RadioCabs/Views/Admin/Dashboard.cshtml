@@ -91,9 +91,13 @@
                                 @company.PaymentStatus
                             </span>
                         </td>
-                        <td>
+                        <td class="d-flex gap-1">
                             <a href="/Admin/ViewCompanyDetails/@company.CompanyId" class="btn btn-sm btn-info">View</a>
                             <a href="/Admin/EditCompany/@company.CompanyId" class="btn btn-sm btn-warning">Edit</a>
+                            <form asp-controller="Admin" asp-action="DeleteCompany" asp-route-id="@company.CompanyId" method="post" onsubmit="return confirm('Delete this company profile?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 }
@@ -102,5 +106,49 @@
     </div>
     <div class="card-footer">
         <a href="/Admin/ManageCompanies" class="btn btn-primary">View All Companies</a>
+    </div>
+</div>
+
+<!-- Recent Drivers Table -->
+<div class="card mb-4">
+    <div class="card-header">Recent Drivers</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Driver Name</th>
+                    <th>Driver ID</th>
+                    <th>City</th>
+                    <th>Payment Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var driver in Model.Drivers.Take(5))
+                {
+                    <tr>
+                        <td>@driver.DriverName</td>
+                        <td>@driver.DriverUniqueId</td>
+                        <td>@(driver.City ?? "-")</td>
+                        <td>
+                            <span class="badge @(driver.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                @(driver.PaymentStatus ?? "Pending")
+                            </span>
+                        </td>
+                        <td class="d-flex gap-1">
+                            <a href="/Admin/ViewDriverDetails/@driver.DriverId" class="btn btn-sm btn-info">View</a>
+                            <a href="/Admin/EditDriver/@driver.DriverId" class="btn btn-sm btn-warning">Edit</a>
+                            <form asp-controller="Admin" asp-action="DeleteDriver" asp-route-id="@driver.DriverId" method="post" onsubmit="return confirm('Delete this driver profile?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="/Admin/ManageDrivers" class="btn btn-success">Manage All Drivers</a>
     </div>
 </div>

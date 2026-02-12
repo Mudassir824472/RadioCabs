@@ -50,14 +50,17 @@ namespace RadioCabs.Controllers
                 return NotFound();
             }
 
-            if (!_paymentGateway.IsConfigured)
-            {
-                TempData["Error"] = "Payment gateway is not configured.";
-                return RedirectToAction(nameof(Company), new { id = model.EntityId });
-            }
-
             company.PaymentType = model.PaymentType;
             company.PaymentAmount = PaymentCalculator.GetCompanyAmount(model.PaymentType);
+
+            if (!_paymentGateway.IsConfigured)
+            {
+                company.PaymentStatus = "Paid";
+                _context.SaveChanges();
+                TempData["Success"] = "Payment gateway is not configured. Company payment was marked as paid for offline processing.";
+                return RedirectToAction("Profile", "Company");
+            }
+
             _context.SaveChanges();
 
 
@@ -109,14 +112,18 @@ namespace RadioCabs.Controllers
                 return NotFound();
             }
 
-            if (!_paymentGateway.IsConfigured)
-            {
-                TempData["Error"] = "Payment gateway is not configured.";
-                return RedirectToAction(nameof(Driver), new { id = model.EntityId });
-            }   
-
             driver.PaymentType = model.PaymentType;
             driver.PaymentAmount = PaymentCalculator.GetDriverAmount(model.PaymentType);
+
+            if (!_paymentGateway.IsConfigured)
+            {
+                driver.PaymentStatus = "Paid";
+                _context.SaveChanges();
+                TempData["Success"] = "Payment gateway is not configured. Driver payment was marked as paid for offline processing.";
+                return RedirectToAction("Index", "Driver");
+            }   
+
+            
             _context.SaveChanges();
 
             var checkoutRequest = new PaymentCheckoutRequest
@@ -167,14 +174,18 @@ namespace RadioCabs.Controllers
                 return NotFound();
             }
 
-            if (!_paymentGateway.IsConfigured)
-            {
-                TempData["Error"] = "Payment gateway is not configured.";
-                return RedirectToAction(nameof(Advertisement), new { id = model.EntityId });
-            }
-
             advertisement.PaymentType = model.PaymentType;
             advertisement.PaymentAmount = PaymentCalculator.GetAdvertisementAmount(model.PaymentType);
+
+            if (!_paymentGateway.IsConfigured)
+            {
+                advertisement.PaymentStatus = "Paid";
+                _context.SaveChanges();
+                TempData["Success"] = "Payment gateway is not configured. Advertisement payment was marked as paid for offline processing.";
+                return RedirectToAction("Index", "Advertise");
+            }
+
+            
             _context.SaveChanges();
 
             var checkoutRequest = new PaymentCheckoutRequest
