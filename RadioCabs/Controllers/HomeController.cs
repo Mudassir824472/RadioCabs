@@ -6,9 +6,26 @@ namespace RadioCabs.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly ApplicationContext _context;
+
+        public HomeController(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var model = new HomeViewModel
+            {
+                PaidAdvertisements = _context.Advertisements
+                                .Where(a => a.PaymentStatus == "Paid")
+                                .OrderByDescending(a => a.AdvertisementId)
+                                .Take(6)
+                                .ToList()
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

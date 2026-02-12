@@ -1,8 +1,10 @@
-﻿@{
+﻿﻿
+@model HomeViewModel
+@{
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
+<div class="text-center">   
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div class="p-4 p-md-5 mb-4 bg-light rounded-3">
@@ -54,6 +56,40 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Featured Paid Advertisements</h3>
+            <p class="text-muted">Companies that completed advertisement payment are highlighted here for easy visibility.</p>
+        </div>
+
+        @if (!Model.PaidAdvertisements.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-light border">No paid advertisements are available right now.</div>
+            </div>
+        }
+        else
+        {
+            @foreach (var advertisement in Model.PaidAdvertisements)
+            {
+                <div class="col-md-6 col-xl-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-start">
+                            <h5 class="card-title mb-1">@(advertisement.CompanyName ?? "-")</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@(advertisement.Designation ?? "-")</h6>
+                            <p class="card-text mb-2">@(advertisement.Description ?? "No description provided.")</p>
+                            <div><strong>Mobile:</strong> @(advertisement.Mobile ?? "-")</div>
+                            <div><strong>Telephone:</strong> @(advertisement.Telephone ?? "-")</div>
+                            <div><strong>Email:</strong> @(advertisement.Email ?? "-")</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
 
     <div class="row mt-4">
         <div class="col-lg-8">

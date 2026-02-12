@@ -8,6 +8,11 @@
     <a asp-action="Logout" class="btn btn-outline-danger">Logout</a>
 </div>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
 <div class="card mb-3">
     <div class="card-header">Company Profile Summary</div>
     <div class="card-body">
@@ -35,5 +40,8 @@
 
 <div class="d-flex gap-2 flex-wrap">
     <a asp-action="Profile" class="btn btn-primary">View / Edit Full Profile</a>
-    <a asp-controller="Payment" asp-action="Company" asp-route-id="@Model.CompanyId" class="btn btn-success">Payment</a>
+    @if (!string.Equals(Model.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
+    {
+        <a asp-controller="Payment" asp-action="Company" asp-route-id="@Model.CompanyId" class="btn btn-success">Payment</a>
+    }
 </div>

@@ -206,3 +206,56 @@
         <a href="/Admin/ManageFeedbacks" class="btn btn-warning">View All Feedback</a>
     </div>
 </div>
+
+<!-- Recent Advertisements Table -->
+<div class="card mb-4">
+    <div class="card-header">Recent Advertisements</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Payment Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Advertisements.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No advertisements found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var advertisement in Model.Advertisements.Take(5))
+                    {
+                        <tr>
+                            <td>@(advertisement.CompanyName ?? "-")</td>
+                            <td>@(advertisement.Email ?? "-")</td>
+                            <td>@(advertisement.Mobile ?? "-")</td>
+                            <td>
+                                <span class="badge @(advertisement.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                    @(advertisement.PaymentStatus ?? "Pending")
+                                </span>
+                            </td>
+                            <td class="d-flex gap-1">
+                                <a href="/Admin/ViewAdvertisementDetails/@advertisement.AdvertisementId" class="btn btn-sm btn-info">View</a>
+                                <a href="/Admin/EditAdvertisement/@advertisement.AdvertisementId" class="btn btn-sm btn-warning">Edit</a>
+                                <form asp-controller="Admin" asp-action="DeleteAdvertisement" asp-route-id="@advertisement.AdvertisementId" method="post" onsubmit="return confirm('Delete this advertisement entry?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="/Admin/ManageAdvertisements" class="btn btn-info">Manage All Advertisements</a>
+    </div>
+</div>

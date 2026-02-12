@@ -41,7 +41,10 @@
 
 <div class="d-flex gap-2 flex-wrap">
     <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
-    <a asp-controller="Payment" asp-action="Driver" asp-route-id="@Model.DriverId" class="btn btn-success">Payment</a>
+    @if (!string.Equals(Model.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
+    {
+        <a asp-controller="Payment" asp-action="Driver" asp-route-id="@Model.DriverId" class="btn btn-success">Payment</a>
+    }
     <form asp-action="DeleteProfile" method="post" onsubmit="return confirm('Are you sure you want to delete your profile? This cannot be undone.');">
         @Html.AntiForgeryToken()
         <button type="submit" class="btn btn-danger">Delete Profile</button>
