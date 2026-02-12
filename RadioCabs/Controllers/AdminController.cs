@@ -450,9 +450,9 @@ namespace RadioCabs.Controllers
 
             var paymentViewModel = new PaymentManagementViewModel
             {
-                PendingCompanyPayments = _context.Companies.Where(c => c.PaymentStatus == "Pending").ToList(),
-                PendingDriverPayments = _context.Drivers.Where(d => d.PaymentStatus == "Pending").ToList(),
-                PendingAdvertisementPayments = _context.Advertisements.Where(a => a.PaymentStatus == "Pending").ToList()
+                CompanyPayments = _context.Companies.OrderByDescending(c => c.CompanyId).ToList(),
+                DriverPayments = _context.Drivers.OrderByDescending(d => d.DriverId).ToList(),
+                AdvertisementPayments = _context.Advertisements.OrderByDescending(a => a.AdvertisementId).ToList()
             };
 
             return View(paymentViewModel);
@@ -503,8 +503,8 @@ namespace RadioCabs.Controllers
     // Helper ViewModel for Payment Management
     public class PaymentManagementViewModel
     {
-        public List<Company> PendingCompanyPayments { get; set; } = new List<Company>();
-        public List<Driver> PendingDriverPayments { get; set; } = new List<Driver>();
-        public List<Advertisement> PendingAdvertisementPayments { get; set; } = new List<Advertisement>();
+        public List<Company> CompanyPayments { get; set; } = new List<Company>();
+        public List<Driver> DriverPayments { get; set; } = new List<Driver>();
+        public List<Advertisement> AdvertisementPayments { get; set; } = new List<Advertisement>();
     }
 }

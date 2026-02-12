@@ -152,3 +152,57 @@
         <a href="/Admin/ManageDrivers" class="btn btn-success">Manage All Drivers</a>
     </div>
 </div>
+
+<!-- Recent Feedback Table -->
+<div class="card mb-4">
+    <div class="card-header">Recent Feedback</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Feedbacks.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No feedback entries found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var feedback in Model.Feedbacks.Take(5))
+                    {
+                        <tr>
+                            <td>@(feedback.Name ?? "-")</td>
+                            <td>@(feedback.Type ?? "-")</td>
+                            <td>
+                                @(feedback.Mobile ?? "-")
+                                <br />
+                                <small>@(feedback.Email ?? "-")</small>
+                            </td>
+                            <td>@(feedback.City ?? "-")</td>
+                            <td>@(feedback.Description ?? "-")</td>
+                            <td class="d-flex gap-1">
+                                <a href="/Admin/ViewFeedbackDetails/@feedback.FeedbackId" class="btn btn-sm btn-info">View</a>
+                                <form asp-controller="Admin" asp-action="DeleteFeedback" asp-route-id="@feedback.FeedbackId" method="post" onsubmit="return confirm('Delete this feedback entry?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="/Admin/ManageFeedbacks" class="btn btn-warning">View All Feedback</a>
+    </div>
+</div>

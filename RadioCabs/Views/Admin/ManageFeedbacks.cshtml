@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Feedback>
+@{
+    ViewData["Title"] = "Manage Feedback";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Manage Feedback</h2>
+    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No feedback entries found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var feedback in Model)
+                    {
+                        <tr>
+                            <td>@feedback.Name</td>
+                            <td>@(feedback.Type ?? "-")</td>
+                            <td>@(feedback.Mobile ?? "-")</td>
+                            <td>@(feedback.Email ?? "-")</td>
+                            <td>@(feedback.City ?? "-")</td>
+                            <td class="d-flex gap-1">
+                                <a asp-action="ViewFeedbackDetails" asp-route-id="@feedback.FeedbackId" class="btn btn-sm btn-info">View</a>
+                                <form asp-action="DeleteFeedback" asp-route-id="@feedback.FeedbackId" method="post" onsubmit="return confirm('Delete this feedback entry?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

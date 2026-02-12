@@ -33,4 +33,7 @@
     </div>
 </div>
 
-<a asp-action="Profile" class="btn btn-primary">View / Edit Full Profile</a>
+<div class="d-flex gap-2 flex-wrap">
+    <a asp-action="Profile" class="btn btn-primary">View / Edit Full Profile</a>
+    <a asp-controller="Payment" asp-action="Company" asp-route-id="@Model.CompanyId" class="btn btn-success">Payment</a>
+</div>

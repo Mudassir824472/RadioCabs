@@ -1,0 +1,137 @@
+﻿@model RadioCabs.Controllers.PaymentManagementViewModel
+@{
+    ViewData["Title"] = "Manage Payments";
+}
+
+<h2 class="mb-3">Manage Payments</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card mb-4">
+    <div class="card-header">Company Payments</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Payment Type</th>
+                    <th>Amount</th>
+                    <th>Current Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model.CompanyPayments)
+                {
+                    <tr>
+                        <td>@company.CompanyUniqueId</td>
+                        <td>@company.CompanyName</td>
+                        <td>@(company.PaymentType ?? "Monthly")</td>
+                        <td>$@company.PaymentAmount</td>
+                        <td><span class="badge @(company.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(company.PaymentStatus ?? "Pending")</span></td>
+                        <td>
+                            <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="entityType" value="company" />
+                                <input type="hidden" name="entityId" value="@company.CompanyId" />
+                                <select name="paymentStatus" class="form-select form-select-sm">
+                                    <option value="Pending" selected="@(company.PaymentStatus == "Pending")">Pending</option>
+                                    <option value="Paid" selected="@(company.PaymentStatus == "Paid")">Paid</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Driver Payments</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Payment Type</th>
+                    <th>Amount</th>
+                    <th>Current Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var driver in Model.DriverPayments)
+                {
+                    <tr>
+                        <td>@driver.DriverUniqueId</td>
+                        <td>@driver.DriverName</td>
+                        <td>@(driver.PaymentType ?? "Monthly")</td>
+                        <td>$@driver.PaymentAmount</td>
+                        <td><span class="badge @(driver.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(driver.PaymentStatus ?? "Pending")</span></td>
+                        <td>
+                            <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="entityType" value="driver" />
+                                <input type="hidden" name="entityId" value="@driver.DriverId" />
+                                <select name="paymentStatus" class="form-select form-select-sm">
+                                    <option value="Pending" selected="@(driver.PaymentStatus == "Pending")">Pending</option>
+                                    <option value="Paid" selected="@(driver.PaymentStatus == "Paid")">Paid</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Advertisement Payments</div>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company</th>
+                    <th>Payment Type</th>
+                    <th>Amount</th>
+                    <th>Current Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var advertisement in Model.AdvertisementPayments)
+                {
+                    <tr>
+                        <td>@advertisement.AdvertisementId</td>
+                        <td>@advertisement.CompanyName</td>
+                        <td>@(advertisement.PaymentType ?? "Monthly")</td>
+                        <td>$@advertisement.PaymentAmount</td>
+                        <td><span class="badge @(advertisement.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(advertisement.PaymentStatus ?? "Pending")</span></td>
+                        <td>
+                            <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="entityType" value="advertisement" />
+                                <input type="hidden" name="entityId" value="@advertisement.AdvertisementId" />
+                                <select name="paymentStatus" class="form-select form-select-sm">
+                                    <option value="Pending" selected="@(advertisement.PaymentStatus == "Pending")">Pending</option>
+                                    <option value="Paid" selected="@(advertisement.PaymentStatus == "Paid")">Paid</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

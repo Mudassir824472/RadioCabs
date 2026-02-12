@@ -4,33 +4,10 @@
 }
 
 <h2>Radio Cabs Listing</h2>
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
+
 
 <div class="row g-4">
-    <div class="col-lg-6">
-        <h4>Registration</h4>
-        <form asp-action="Register" method="post" class="border rounded p-3">
-            @Html.AntiForgeryToken()
-            <div class="mb-2"><label>Company Name</label><input asp-for="Registration.CompanyName" class="form-control" /></div>
-            <div class="mb-2"><label>Company ID</label><input asp-for="Registration.CompanyUniqueId" class="form-control" /><span asp-validation-for="Registration.CompanyUniqueId" class="text-danger"></span></div>
-            <div class="mb-2"><label>Password</label><input asp-for="Registration.Password" type="password" class="form-control" /></div>
-            <div class="mb-2"><label>Contact Person</label><input asp-for="Registration.ContactPerson" class="form-control" /></div>
-            <div class="mb-2"><label>Designation</label><input asp-for="Registration.Designation" class="form-control" /></div>
-            <div class="mb-2"><label>Address</label><textarea asp-for="Registration.Address" class="form-control"></textarea></div>
-            <div class="mb-2"><label>Mobile</label><input asp-for="Registration.Mobile" class="form-control" /></div>
-            <div class="mb-2"><label>Telephone</label><input asp-for="Registration.Telephone" class="form-control" /></div>
-            <div class="mb-2"><label>Fax Number</label><input asp-for="Registration.FaxNumber" class="form-control" /></div>
-            <div class="mb-2"><label>Email</label><input asp-for="Registration.Email" class="form-control" /></div>
-            <div class="mb-2"><label>Membership Type</label><select asp-for="Registration.MembershipType" class="form-select"><option>Premium</option><option>Basic</option><option>Free</option></select></div>
-            <div class="mb-2"><label>Payment Type</label><select asp-for="Registration.PaymentType" id="listingPaymentType" class="form-select"><option>Monthly</option><option>Quarterly</option></select></div>
-            <div class="alert alert-info py-2">Payable amount: <strong id="listingAmount">$15</strong></div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
-        </form>
-    </div>
+    
 
     <div class="col-lg-6">
         <h4>Search Registered Companies</h4>
@@ -52,14 +29,7 @@
                     <option value="Free">Free</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Payment Status</label>
-                <select asp-for="PaymentStatus" class="form-select">
-                    <option value="">All</option>
-                    <option value="Paid">Paid</option>
-                    <option value="Pending">Pending</option>
-                </select>
-            </div>
+        
             <div class="col-md-4">
                 <button type="submit" class="btn btn-outline-primary w-100">Search</button>
             </div>
