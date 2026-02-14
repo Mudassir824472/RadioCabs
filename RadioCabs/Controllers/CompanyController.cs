@@ -160,6 +160,9 @@ namespace RadioCabs.Controllers
 
             _context.SaveChanges();
 
+            TempData["SuccessMessage"] = "Changes saved successfully!";
+
+
             // Update amount to display in View
             model.PaymentAmount = company.PaymentAmount;
             model.PaymentStatus = company.PaymentStatus;

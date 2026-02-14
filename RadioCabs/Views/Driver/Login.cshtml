@@ -1,22 +1,120 @@
 ﻿@model RadioCabs.Models.DriverLoginViewModel
 
 @{
+    Layout = null;
     ViewData["Title"] = "Driver Login";
 }
 
-<h2>Driver Login</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Driver Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<form asp-action="Login" method="post" class="col-lg-4 border rounded p-3">
-    @Html.AntiForgeryToken()
-    <div class="mb-3">
-        <label asp-for="DriverUniqueId" class="form-label"></label>
-        <input asp-for="DriverUniqueId" class="form-control" />
-        <span asp-validation-for="DriverUniqueId" class="text-danger"></span>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .login-card {
+            width: 420px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            color: #fff;
+        }
+
+            .login-card h2 {
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .btn-premium {
+            background-color: #000;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+            .btn-premium:hover {
+                background-color: #333;
+                transform: translateY(-2px);
+            }
+
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .text-danger {
+            color: #ffdddd !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card text-center">
+
+        <h2>🚖 Driver Login</h2>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3 text-start">
+                <label asp-for="DriverUniqueId" class="form-label"></label>
+                <input asp-for="DriverUniqueId" class="form-control" placeholder="Enter Driver ID" />
+                <span asp-validation-for="DriverUniqueId" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3 text-start input-group">
+                <label asp-for="Password" class="form-label w-100"></label>
+                <input asp-for="Password" type="password" id="passwordField" class="form-control" placeholder="Enter Password" />
+                <span class="toggle-password" onclick="togglePassword()">👁</span>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid mt-4">
+                <button class="btn btn-premium text-white" type="submit">
+                    Login
+                </button>
+            </div>
+        </form>
+
     </div>
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <button class="btn btn-dark" type="submit">Login</button>
-</form>
+
+    <script>
+        function togglePassword() {
+            var field = document.getElementById("passwordField");
+            field.type = field.type === "password" ? "text" : "password";
+        }
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+</body>
+</html>

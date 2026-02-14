@@ -3,88 +3,157 @@
     ViewData["Title"] = $"{Model.Section} Payment";
 }
 
-<h2>@Model.Section Payment</h2>
+<style>
+    body {
+        background: #f4f6f9;
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
+    .payment-card {
+        max-width: 800px;
+        margin: 40px auto;
+        border-radius: 20px;
+        border: none;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
 
-    <div class="border rounded p-3 col-lg-7">
-        <p><strong>@Model.Section Name:</strong> @Model.Name</p>
-        <p><strong>Current Status:</strong> @Model.PaymentStatus</p>
+    .payment-header {
+        background: linear-gradient(135deg, #141e30, #243b55);
+        color: white;
+        padding: 25px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    .btn-rounded {
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-weight: 600;
+    }
+
+    .summary-box {
+        background-color: #eef2f7;
+        border-radius: 12px;
+        padding: 15px;
+    }
+</style>
+
+<div class="card payment-card">
+
+    <!-- Header -->
+    <div class="payment-header">
+        <h4 class="mb-0">💳 @Model.Section Payment</h4>
+    </div>
+
+    <div class="card-body p-4">
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
+        <!-- Summary -->
+        <div class="summary-box mb-4">
+            <p class="mb-1"><strong>@Model.Section Name:</strong> @Model.Name</p>
+            <p class="mb-0"><strong>Current Status:</strong> @Model.PaymentStatus</p>
+        </div>
 
         <form method="post">
             @Html.AntiForgeryToken()
+
             <input type="hidden" asp-for="Section" />
             <input type="hidden" asp-for="EntityId" />
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-            <div class="mb-2">
-                <label>Payment Type</label>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Payment Type -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Payment Type</label>
                 <select asp-for="PaymentType" id="paymentType" class="form-select">
                     <option>Monthly</option>
                     <option>Quarterly</option>
                 </select>
             </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label asp-for="CardHolderName" class="form-label">Card Holder Name</label>
-                        <input asp-for="CardHolderName" class="form-control" placeholder="Card holder name" />
-                        <span asp-validation-for="CardHolderName" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label asp-for="CardNumber" class="form-label">Card Number</label>
-                        <input asp-for="CardNumber" class="form-control" inputmode="numeric" placeholder="1234-1234-1234-1234" />
-                        <span asp-validation-for="CardNumber" class="text-danger"></span>
-                    </div>
+            <!-- Card Details -->
+            <h6 class="fw-bold mb-3">Card Information</h6>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CardHolderName" class="form-label"></label>
+                    <input asp-for="CardHolderName" class="form-control" placeholder="Card holder name" />
+                    <span asp-validation-for="CardHolderName" class="text-danger"></span>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <label asp-for="Cvv" class="form-label">CVV</label>
-                        <input asp-for="Cvv" class="form-control" inputmode="numeric" placeholder="123" />
-                        <span asp-validation-for="Cvv" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label asp-for="ExpiryMonth" class="form-label">Expiry Month</label>
-                        <input asp-for="ExpiryMonth" class="form-control" inputmode="numeric" min="1" max="12" placeholder="MM" />
-                        <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label asp-for="ExpiryYear" class="form-label">Expiry Year</label>
-                        <input asp-for="ExpiryYear" class="form-control" inputmode="numeric" min="2026" placeholder="YYYY" />
-                        <span asp-validation-for="ExpiryYear" class="text-danger"></span>
-                    </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CardNumber" class="form-label"></label>
+                    <input asp-for="CardNumber" class="form-control"
+                           placeholder="1234 1234 1234 1234" inputmode="numeric" />
+                    <span asp-validation-for="CardNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Cvv" class="form-label"></label>
+                    <input asp-for="Cvv" class="form-control" placeholder="123" inputmode="numeric" />
+                    <span asp-validation-for="Cvv" class="text-danger"></span>
                 </div>
 
-                <div class="alert alert-info py-2 mt-2">
-                    Payable amount: <strong id="paymentAmount">$@Model.PaymentAmount</strong>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ExpiryMonth" class="form-label"></label>
+                    <input asp-for="ExpiryMonth" class="form-control"
+                           placeholder="MM" inputmode="numeric" />
+                    <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-success">Pay Now</button>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ExpiryYear" class="form-label"></label>
+                    <input asp-for="ExpiryYear" class="form-control"
+                           placeholder="YYYY" inputmode="numeric" />
+                    <span asp-validation-for="ExpiryYear" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Amount -->
+            <div class="alert alert-info mt-3">
+                Payable Amount:
+                <strong id="paymentAmount">$@Model.PaymentAmount</strong>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-rounded">
+                🔒 Pay Now
+            </button>
+
         </form>
     </div>
+</div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-        <script>
-            const paymentType = document.getElementById('paymentType');
-            const paymentAmount = document.getElementById('paymentAmount');
-            const section = '@Model.Section';
+    <partial name="_ValidationScriptsPartial" />
 
-            function amountFor(type) {
-                if (section === 'Driver') {
-                    return type === 'Quarterly' ? 25 : 10;
-                }
-                return type === 'Quarterly' ? 40 : 15;
+    <script>
+        const paymentType = document.getElementById('paymentType');
+        const paymentAmount = document.getElementById('paymentAmount');
+        const section = '@Model.Section';
+
+        function amountFor(type) {
+            if (section === 'Driver') {
+                return type === 'Quarterly' ? 25 : 10;
             }
+            return type === 'Quarterly' ? 40 : 15;
+        }
 
-            function updateAmount() {
-                paymentAmount.textContent = `$${amountFor(paymentType.value)}`;
-            }
+        function updateAmount() {
+            paymentAmount.textContent = `$${amountFor(paymentType.value)}`;
+        }
 
-            paymentType.addEventListener('change', updateAmount);
-            updateAmount();
-        </script>
+        paymentType.addEventListener('change', updateAmount);
+        updateAmount();
+    </script>
 }

@@ -1,5 +1,12 @@
 ﻿@model AdminDashboardViewModel
 
+@{
+    string DisplayPaymentStatus(string? status)
+    {
+        return string.Equals(status?.Trim(), "Paid", StringComparison.OrdinalIgnoreCase) ? "Paid" : "Pending";
+    }
+}
+
 <div class="dashboard-header mb-4">
     <h1>Admin Dashboard</h1>
     <p class="text-muted">Welcome to RadioCabs Admin Panel</p>
@@ -47,9 +54,9 @@
         <div class="card">
             <div class="card-header">Payment Status Overview</div>
             <div class="card-body">
-                <p><strong>Pending Payments:</strong> <span class="badge badge-warning">@Model.PendingPayments</span></p>
-                <p><strong>Completed Payments:</strong> <span class="badge badge-success">@Model.CompletedPayments</span></p>
-                <p><strong>Total Revenue:</strong> <span class="badge badge-primary">${{Model.TotalRevenue}}</span></p>
+                <p><strong>Pending Payments:</strong> <span class="badge bg-warning text-dark">@Model.PendingPayments</span></p>
+                <p><strong>Completed Payments:</strong> <span class="badge bg-success">@Model.CompletedPayments</span></p>
+                <p><strong>Total Revenue:</strong> <span class="badge bg-primary">@Model.TotalRevenue.ToString("C")</span></p>
             </div>
         </div>
     </div>
@@ -57,9 +64,9 @@
         <div class="card">
             <div class="card-header">Membership Distribution</div>
             <div class="card-body">
-                <p><strong>Premium Members:</strong> <span class="badge badge-success">@Model.PremiumMembers</span></p>
-                <p><strong>Basic Members:</strong> <span class="badge badge-info">@Model.BasicMembers</span></p>
-                <p><strong>Free Members:</strong> <span class="badge badge-secondary">@Model.FreeMembers</span></p>
+                <p><strong>Premium Members:</strong> <span class="badge bg-success">@Model.PremiumMembers</span></p>
+                <p><strong>Basic Members:</strong> <span class="badge bg-info text-dark">@Model.BasicMembers</span></p>
+                <p><strong>Free Members:</strong> <span class="badge bg-secondary">@Model.FreeMembers</span></p>
             </div>
         </div>
     </div>
@@ -85,10 +92,10 @@
                     <tr>
                         <td>@company.CompanyName</td>
                         <td>@company.Email</td>
-                        <td><span class="badge badge-info">@company.MembershipType</span></td>
+                        <td><span class="badge bg-info text-dark">@company.MembershipType</span></td>
                         <td>
-                            <span class="badge @(company.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
-                                @company.PaymentStatus
+                            <span class="badge @(DisplayPaymentStatus(company.PaymentStatus) == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                @DisplayPaymentStatus(company.PaymentStatus)
                             </span>
                         </td>
                         <td class="d-flex gap-1">
@@ -131,8 +138,8 @@
                         <td>@driver.DriverUniqueId</td>
                         <td>@(driver.City ?? "-")</td>
                         <td>
-                            <span class="badge @(driver.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
-                                @(driver.PaymentStatus ?? "Pending")
+                            <span class="badge @(DisplayPaymentStatus(driver.PaymentStatus) == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                @DisplayPaymentStatus(driver.PaymentStatus)
                             </span>
                         </td>
                         <td class="d-flex gap-1">
@@ -237,8 +244,8 @@
                             <td>@(advertisement.Email ?? "-")</td>
                             <td>@(advertisement.Mobile ?? "-")</td>
                             <td>
-                                <span class="badge @(advertisement.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
-                                    @(advertisement.PaymentStatus ?? "Pending")
+                                <span class="badge @(DisplayPaymentStatus(advertisement.PaymentStatus) == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                    @DisplayPaymentStatus(advertisement.PaymentStatus)
                                 </span>
                             </td>
                             <td class="d-flex gap-1">

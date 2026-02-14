@@ -43,7 +43,7 @@
                             <td>@(company.ContactPerson ?? "-")</td>
                             <td>@company.MembershipType</td>
                             <td>
-                                <span class="badge @(company.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                <span class="badge @(company.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
                                     @(company.PaymentStatus ?? "Pending")
                                 </span>
                             </td>

@@ -99,6 +99,46 @@ namespace RadioCabs.Controllers
             var advertisements = _context.Advertisements.ToList();
             var feedbacks = _context.Feedbacks.ToList();
 
+            string NormalizeStatus(string? status)
+            {
+                if (string.IsNullOrWhiteSpace(status))
+                {
+                    return "Pending";
+                }
+
+                return status.Trim().Equals("Paid", System.StringComparison.OrdinalIgnoreCase)
+                    ? "Paid"
+                    : "Pending";
+            }
+
+            string NormalizeMembership(string? membershipType)
+            {
+                if (string.IsNullOrWhiteSpace(membershipType))
+                {
+                    return "Free";
+                }
+
+                var normalized = membershipType.Trim();
+                if (normalized.Equals("Premium", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Premium";
+                }
+
+                if (normalized.Equals("Basic", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Basic";
+                }
+
+                return "Free";
+            }
+
+            var paidCompanyRevenue = companies.Where(c => NormalizeStatus(c.PaymentStatus) == "Paid").Sum(c => c.PaymentAmount);
+            var paidDriverRevenue = drivers.Where(d => NormalizeStatus(d.PaymentStatus) == "Paid").Sum(d => d.PaymentAmount);
+            var paidAdvertisementRevenue = advertisements.Where(a => NormalizeStatus(a.PaymentStatus) == "Paid").Sum(a => a.PaymentAmount);
+
+
+
+
             var model = new AdminDashboardViewModel
             {
                 Companies = companies.OrderByDescending(c => c.CompanyId).ToList(),
@@ -113,20 +153,18 @@ namespace RadioCabs.Controllers
                 TotalFeedbacks = feedbacks.Count,
 
                 // Payment Statistics
-                PendingPayments = companies.Count(c => c.PaymentStatus == "Pending") +
-                                 drivers.Count(d => d.PaymentStatus == "Pending") +
-                                 advertisements.Count(a => a.PaymentStatus == "Pending"),
-                CompletedPayments = companies.Count(c => c.PaymentStatus == "Paid") +
-                                   drivers.Count(d => d.PaymentStatus == "Paid") +
-                                   advertisements.Count(a => a.PaymentStatus == "Paid"),
-                TotalRevenue = companies.Sum(c => c.PaymentAmount) +
-                              drivers.Sum(d => d.PaymentAmount) +
-                              advertisements.Sum(a => a.PaymentAmount),
+                PendingPayments = companies.Count(c => NormalizeStatus(c.PaymentStatus) == "Pending") +
+                                 drivers.Count(d => NormalizeStatus(d.PaymentStatus) == "Pending") +
+                                 advertisements.Count(a => NormalizeStatus(a.PaymentStatus) == "Pending"),
+                CompletedPayments = companies.Count(c => NormalizeStatus(c.PaymentStatus) == "Paid") +
+                                   drivers.Count(d => NormalizeStatus(d.PaymentStatus) == "Paid") +
+                                   advertisements.Count(a => NormalizeStatus(a.PaymentStatus) == "Paid"),
+                TotalRevenue = paidCompanyRevenue + paidDriverRevenue + paidAdvertisementRevenue,
 
                 // Membership Statistics
-                PremiumMembers = companies.Count(c => c.MembershipType == "Premium"),
-                BasicMembers = companies.Count(c => c.MembershipType == "Basic"),
-                FreeMembers = companies.Count(c => c.MembershipType == "Free")
+                PremiumMembers = companies.Count(c => NormalizeMembership(c.MembershipType) == "Premium"),
+                BasicMembers = companies.Count(c => NormalizeMembership(c.MembershipType) == "Basic"),
+                FreeMembers = companies.Count(c => NormalizeMembership(c.MembershipType) == "Free")
             };
 
             return View(model);

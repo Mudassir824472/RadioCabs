@@ -1,52 +1,147 @@
-﻿﻿
-@model Driver
+﻿@model Driver
 @{
     ViewData["Title"] = "Driver Dashboard";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Welcome, @Model.DriverName</h2>
-    <a asp-action="Logout" class="btn btn-outline-danger">Logout</a>
-</div>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
-
-<div class="card mb-4">
-    <div class="card-header">Your Profile</div>
-    <div class="card-body">
-        <dl class="row mb-0">
-            <dt class="col-sm-4">Driver ID</dt>
-            <dd class="col-sm-8">@Model.DriverUniqueId</dd>
-
-            <dt class="col-sm-4">Email</dt>
-            <dd class="col-sm-8">@(Model.Email ?? "-")</dd>
-
-            <dt class="col-sm-4">Mobile</dt>
-            <dd class="col-sm-8">@(Model.Mobile ?? "-")</dd>
-
-            <dt class="col-sm-4">City</dt>
-            <dd class="col-sm-8">@(Model.City ?? "-")</dd>
-
-            <dt class="col-sm-4">Experience</dt>
-            <dd class="col-sm-8">@Model.Experience years</dd>
-
-            <dt class="col-sm-4">Payment Status</dt>
-            <dd class="col-sm-8">@(Model.PaymentStatus ?? "Pending")</dd>
-        </dl>
-    </div>
-</div>
-
-<div class="d-flex gap-2 flex-wrap">
-    <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
-    @if (!string.Equals(Model.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
-    {
-        <a asp-controller="Payment" asp-action="Driver" asp-route-id="@Model.DriverId" class="btn btn-success">Payment</a>
+<style>
+    body {
+        background-color: #f4f6f9;
     }
-    <form asp-action="DeleteProfile" method="post" onsubmit="return confirm('Are you sure you want to delete your profile? This cannot be undone.');">
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-danger">Delete Profile</button>
-    </form>
+
+    .dashboard-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #1f4037, #99f2c8);
+        color: white;
+        border-radius: 15px 15px 0 0;
+        padding: 25px;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .info-value {
+        font-weight: 500;
+    }
+
+    .action-btn {
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+
+    .status-paid {
+        color: #28a745;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        color: #dc3545;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">🚖 Welcome, @Model.DriverName</h2>
+        <a asp-action="Logout" class="btn btn-outline-danger action-btn">Logout</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success shadow-sm">@TempData["Success"]</div>
+    }
+
+    <!-- Profile Card -->
+    <div class="card dashboard-card mb-4">
+
+        <div class="profile-header">
+            <h4 class="mb-0">Driver Profile Information</h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="info-label">Driver ID</div>
+                    <div class="info-value">@Model.DriverUniqueId</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-label">City</div>
+                    <div class="info-value">@(Model.City ?? "-")</div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="info-label">Email</div>
+                    <div class="info-value">@(Model.Email ?? "-")</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-label">Mobile</div>
+                    <div class="info-value">@(Model.Mobile ?? "-")</div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="info-label">Experience</div>
+                    <div class="info-value">@Model.Experience years</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-label">Payment Status</div>
+                    <div class="info-value">
+                        @if (string.Equals(Model.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="status-paid">Paid</span>
+                        }
+                        else
+                        {
+                            <span class="status-pending">Pending</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex gap-3 flex-wrap">
+
+        <a asp-action="EditProfile" class="btn btn-primary action-btn">
+            ✏ Edit Profile
+        </a>
+
+        @if (!string.Equals(Model.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
+        {
+            <a asp-controller="Payment" asp-action="Driver" asp-route-id="@Model.DriverId"
+               class="btn btn-success action-btn">
+                💳 Make Payment
+            </a>
+        }
+
+        <form asp-action="DeleteProfile" method="post"
+              onsubmit="return confirm('Are you sure you want to delete your profile? This cannot be undone.');">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger action-btn">
+                🗑 Delete Profile
+            </button>
+        </form>
+
+    </div>
+
 </div>
+    

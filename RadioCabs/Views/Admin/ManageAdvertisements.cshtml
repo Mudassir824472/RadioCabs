@@ -43,7 +43,7 @@
                             <td>@(advertisement.Mobile ?? "-")</td>
                             <td>@(advertisement.PaymentType ?? "Monthly")</td>
                             <td>
-                                <span class="badge @(advertisement.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                <span class="badge @(advertisement.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
                                     @(advertisement.PaymentStatus ?? "Pending")
                                 </span>
                             </td>

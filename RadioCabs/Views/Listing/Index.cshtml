@@ -1,67 +1,175 @@
 ﻿@model RadioCabs.Models.ListingPageViewModel
 @{
-    ViewData["Title"] = "Listing";
+    ViewData["Title"] = "Radio Cabs Listing";
 }
 
-<h2>Radio Cabs Listing</h2>
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
 
+    .listing-card {
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
 
-<div class="row g-4">
-    
+    .listing-header {
+        background: linear-gradient(135deg, #141e30, #243b55);
+        color: white;
+        padding: 20px;
+        border-radius: 18px 18px 0 0;
+    }
 
-    <div class="col-lg-6">
-        <h4>Search Registered Companies</h4>
-        <form method="get" class="row g-2 align-items-end mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Search</label>
-                <input asp-for="SearchTerm" class="form-control" placeholder="Company, contact, email, or phone" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">City/Address</label>
-                <input asp-for="City" class="form-control" placeholder="City or address" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Membership</label>
-                <select asp-for="MembershipType" class="form-select">
-                    <option value="">All</option>
-                    <option value="Premium">Premium</option>
-                    <option value="Basic">Basic</option>
-                    <option value="Free">Free</option>
-                </select>
-            </div>
-        
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-outline-primary w-100">Search</button>
-            </div>
-        </form>
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 8px 14px;
+    }
 
-        <div class="table-responsive border rounded">
-            <table class="table table-sm mb-0">
-                <thead class="table-light"><tr><th>Company</th><th>Contact</th><th>Membership</th></tr></thead>
-                <tbody>
-                    @foreach (var company in Model.Results)
-                    {
+    .btn-rounded {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .membership-badge {
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .badge-premium {
+        background-color: #ffc107;
+    }
+
+    .badge-basic {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-free {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f2f2f2;
+        transition: 0.2s;
+    }
+</style>
+
+<div class="container py-4">
+
+    <div class="card listing-card">
+
+        <div class="listing-header">
+            <h4 class="mb-0">📋 Radio Cabs Company Directory</h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Search Section -->
+            <h5 class="mb-3">🔎 Search Registered Companies</h5>
+
+            <form method="get" class="row g-3 align-items-end mb-4">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Search</label>
+                    <input asp-for="SearchTerm" class="form-control"
+                           placeholder="Company, contact, email, phone" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">City / Address</label>
+                    <input asp-for="City" class="form-control"
+                           placeholder="City or address" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Membership</label>
+                    <select asp-for="MembershipType" class="form-select">
+                        <option value="">All</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Basic">Basic</option>
+                        <option value="Free">Free</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark btn-rounded w-100">
+                        Search
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- Results Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
                         <tr>
-                            <td>@company.CompanyName</td>
-                            <td>@company.Mobile<br /><small>@company.Email</small></td>
-                            <td>@company.MembershipType</td>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Membership</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Results != null && Model.Results.Any())
+                        {
+                            foreach (var company in Model.Results)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@company.CompanyName</strong>
+                                    </td>
+
+                                    <td>
+                                        <div>@company.Mobile</div>
+                                        <small class="text-muted">@company.Email</small>
+                                    </td>
+
+                                    <td>
+                                        @if (company.MembershipType == "Premium")
+                                        {
+                                            <span class="membership-badge badge-premium">
+                                                Premium
+                                            </span>
+                                        }
+                                        else if (company.MembershipType == "Basic")
+                                        {
+                                            <span class="membership-badge badge-basic">
+                                                Basic
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="membership-badge badge-free">
+                                                Free
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    No companies found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        const listingType = document.getElementById('listingPaymentType');
-        const listingAmount = document.getElementById('listingAmount');
-        function updateListingAmount() {
-            listingAmount.textContent = listingType.value === 'Quarterly' ? '$40' : '$15';
-        }
-        listingType.addEventListener('change', updateListingAmount);
-        updateListingAmount();
-    </script>
 }

@@ -45,7 +45,7 @@
                             <td>@(driver.Mobile ?? "-")</td>
                             <td>@(driver.City ?? "-")</td>
                             <td>
-                                <span class="badge @(driver.PaymentStatus == "Paid" ? "badge-success" : "badge-warning")">
+                                <span class="badge @(driver.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
                                     @(driver.PaymentStatus ?? "Pending")
                                 </span>
                             </td>

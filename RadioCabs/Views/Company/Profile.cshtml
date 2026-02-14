@@ -1,0 +1,171 @@
+﻿@model CompanyProfileViewModel
+@{
+    ViewData["Title"] = "Edit Company Profile";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .profile-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: white;
+        padding: 25px;
+    }
+
+    .form-control, .form-select, textarea {
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    .btn-rounded {
+        border-radius: 10px;
+        padding: 8px 22px;
+    }
+
+    .readonly-field {
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="container py-4">
+
+    <div class="card profile-card">
+
+        <!-- Header -->
+        <div class="profile-header">
+            <h3 class="mb-0">✏ Edit Company Details</h3>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+
+            <form asp-action="Profile" method="post">
+                <input asp-for="CompanyId" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <!-- Company ID -->
+                <div class="mb-4">
+                    <label asp-for="CompanyUniqueId" class="form-label fw-semibold"></label>
+                    <input asp-for="CompanyUniqueId" class="form-control readonly-field" readonly />
+                </div>
+
+                <!-- Name & Email -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CompanyName" class="form-label fw-semibold"></label>
+                        <input asp-for="CompanyName" class="form-control" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ContactPerson" class="form-label fw-semibold"></label>
+                        <input asp-for="ContactPerson" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Designation" class="form-label fw-semibold"></label>
+                        <input asp-for="Designation" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Phone Info -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Mobile" class="form-label fw-semibold"></label>
+                        <input asp-for="Mobile" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Telephone" class="form-label fw-semibold"></label>
+                        <input asp-for="Telephone" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FaxNumber" class="form-label fw-semibold"></label>
+                    <input asp-for="FaxNumber" class="form-control" />
+                </div>
+
+                <!-- Address -->
+                <div class="mb-4">
+                    <label asp-for="Address" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                </div>
+
+                <!-- Membership & Payment -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MembershipType" class="form-label fw-semibold"></label>
+                        <select asp-for="MembershipType" class="form-select">
+                            <option value="">Select membership</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Gold">Gold</option>
+                        </select>
+                        <span asp-validation-for="MembershipType" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PaymentType" class="form-label fw-semibold"></label>
+                        <select asp-for="PaymentType" class="form-select">
+                            <option value="">Select payment</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                        <span asp-validation-for="PaymentType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Readonly Payment Info -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PaymentStatus" class="form-label fw-semibold"></label>
+                        <input asp-for="PaymentStatus" class="form-control readonly-field" readonly />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PaymentAmount" class="form-label fw-semibold"></label>
+                        <input asp-for="PaymentAmount" class="form-control readonly-field" readonly />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary btn-rounded">
+                        💾 Save Changes
+                    </button>
+
+                    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-rounded">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

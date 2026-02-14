@@ -3,36 +3,183 @@
     ViewData["Title"] = "Driver Registration";
 }
 
-<h2>Driver Registration</h2>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-<form asp-action="Register" method="post" class="border rounded p-3 col-lg-8">
-    @Html.AntiForgeryToken()
-    <div class="mb-2"><label>Driver Name</label><input asp-for="DriverName" class="form-control" /></div>
-    <div class="mb-2"><label>Driver ID</label><input asp-for="DriverUniqueId" class="form-control" /><span asp-validation-for="DriverUniqueId" class="text-danger"></span></div>
-    <div class="mb-2"><label>Password</label><input asp-for="Password" type="password" class="form-control" /></div>
-    <div class="mb-2"><label>Contact Person</label><input asp-for="ContactPerson" class="form-control" /></div>
-    <div class="mb-2"><label>Address</label><textarea asp-for="Address" class="form-control"></textarea></div>
-    <div class="mb-2"><label>City</label><input asp-for="City" class="form-control" /></div>
-    <div class="mb-2"><label>Mobile</label><input asp-for="Mobile" class="form-control" /></div>
-    <div class="mb-2"><label>Telephone</label><input asp-for="Telephone" class="form-control" /></div>
-    <div class="mb-2"><label>Email</label><input asp-for="Email" class="form-control" /></div>
-    <div class="mb-2"><label>Experience (years)</label><input asp-for="Experience" type="number" class="form-control" /></div>
-    <div class="mb-2"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
-    <div class="mb-2"><label>Payment Type</label><select asp-for="PaymentType" id="driverPaymentType" class="form-select"><option>Monthly</option><option>Quarterly</option></select></div>
-    <div class="alert alert-info py-2">Payable amount: <strong id="driverAmount">$10</strong></div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="reset" class="btn btn-secondary">Reset</button>
-    <a asp-action="Index" class="btn btn-link">Back to Driver Listing</a>
-</form>
+<style>
+    body {
+        background: #f4f6f9;
+    }
+
+    .register-card {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #1f4037, #99f2c8);
+        color: white;
+        padding: 25px;
+        border-radius: 18px 18px 0 0;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .payment-box {
+        background: #e9f7ef;
+        border-radius: 12px;
+        padding: 15px;
+        font-weight: 500;
+        border: 1px solid #d4edda;
+    }
+
+    .btn-rounded {
+        border-radius: 10px;
+        padding: 8px 20px;
+    }
+</style>
+
+<div class="container py-5">
+
+    <div class="card register-card">
+
+        <div class="register-header">
+            <h3 class="mb-0">🚖 Driver Registration</h3>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="Register" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- Basic Info -->
+                <div class="section-title">Basic Information</div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Driver Name</label>
+                        <input asp-for="DriverName" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Driver ID</label>
+                        <input asp-for="DriverUniqueId" class="form-control" />
+                        <span asp-validation-for="DriverUniqueId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Contact Person</label>
+                    <input asp-for="ContactPerson" class="form-control" />
+                </div>
+
+                <!-- Contact Details -->
+                <div class="section-title">Contact Details</div>
+
+                <div class="mb-3">
+                    <label>Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>City</label>
+                        <input asp-for="City" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Mobile</label>
+                        <input asp-for="Mobile" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Telephone</label>
+                        <input asp-for="Telephone" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+
+                <!-- Professional Info -->
+                <div class="section-title">Professional Details</div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Experience (years)</label>
+                        <input asp-for="Experience" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="section-title">Payment Plan</div>
+
+                <div class="row align-items-end">
+                    <div class="col-md-6 mb-3">
+                        <label>Payment Type</label>
+                        <select asp-for="PaymentType" id="driverPaymentType" class="form-select">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="payment-box">
+                            Payable Amount:
+                            <strong id="driverAmount" class="ms-2">$10</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 mt-4 flex-wrap">
+                    <button type="submit" class="btn btn-primary btn-rounded">
+                        ✅ Submit Registration
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary btn-rounded">
+                        Reset
+                    </button>
+                    <a asp-action="Index" class="btn btn-link">
+                        ← Back to Driver Listing
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
         const driverType = document.getElementById('driverPaymentType');
         const driverAmount = document.getElementById('driverAmount');
+
         function updateDriverAmount() {
-            driverAmount.textContent = driverType.value === 'Quarterly' ? '$25' : '$10';
+            driverAmount.textContent =
+                driverType.value === 'Quarterly' ? '$25' : '$10';
         }
+
         driverType.addEventListener('change', updateDriverAmount);
         updateDriverAmount();
     </script>
