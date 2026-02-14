@@ -6,6 +6,109 @@
         return string.Equals(status?.Trim(), "Paid", StringComparison.OrdinalIgnoreCase) ? "Paid" : "Pending";
     }
 }
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .dashboard-header {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        padding: 30px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+        .dashboard-header h1 {
+            font-weight: 600;
+        }
+
+    .card {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+    .card-header {
+        background: transparent;
+        font-weight: 600;
+        font-size: 18px;
+        border-bottom: 1px solid #eee;
+        padding: 18px 20px;
+    }
+
+    .table {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+        .table thead {
+            background: #2a5298;
+            color: white;
+        }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9fbfd;
+    }
+
+    .btn {
+        border-radius: 10px;
+        font-weight: 500;
+        padding: 6px 14px;
+        transition: 0.3s;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+    .badge {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .stat-card {
+        border-radius: 20px;
+        color: white;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card h5 {
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .stat-card .display-4 {
+            font-weight: 700;
+        }
+
+    .stat-primary {
+        background: linear-gradient(135deg, #4e73df, #224abe);
+    }
+
+    .stat-success {
+        background: linear-gradient(135deg, #1cc88a, #13855c);
+    }
+
+    .stat-info {
+        background: linear-gradient(135deg, #36b9cc, #258391);
+    }
+
+    .stat-warning {
+        background: linear-gradient(135deg, #f6c23e, #dda20a);
+    }
+
+</style>
+
 
 <div class="dashboard-header mb-4">
     <h1>Admin Dashboard</h1>
@@ -13,40 +116,36 @@
 </div>
 
 <!-- Statistics Cards -->
-<div class="row mb-4">
+<div class="row mb-4 g-4">
     <div class="col-md-3">
-        <div class="card text-white bg-primary">
-            <div class="card-body">
-                <h5 class="card-title">Total Companies</h5>
-                <p class="card-text display-4">@Model.TotalCompanies</p>
-            </div>
+        <div class="stat-card stat-primary">
+            <h5>Total Companies</h5>
+            <p class="display-4">@Model.TotalCompanies</p>
         </div>
     </div>
+
     <div class="col-md-3">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <h5 class="card-title">Total Drivers</h5>
-                <p class="card-text display-4">@Model.TotalDrivers</p>
-            </div>
+        <div class="stat-card stat-success">
+            <h5>Total Drivers</h5>
+            <p class="display-4">@Model.TotalDrivers</p>
         </div>
     </div>
+
     <div class="col-md-3">
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <h5 class="card-title">Total Advertisements</h5>
-                <p class="card-text display-4">@Model.TotalAdvertisements</p>
-            </div>
+        <div class="stat-card stat-info">
+            <h5>Total Advertisements</h5>
+            <p class="display-4">@Model.TotalAdvertisements</p>
         </div>
     </div>
+
     <div class="col-md-3">
-        <div class="card text-white bg-warning">
-            <div class="card-body">
-                <h5 class="card-title">Total Feedbacks</h5>
-                <p class="card-text display-4">@Model.TotalFeedbacks</p>
-            </div>
+        <div class="stat-card stat-warning">
+            <h5>Total Feedbacks</h5>
+            <p class="display-4">@Model.TotalFeedbacks</p>
         </div>
     </div>
 </div>
+
 
 <!-- Payment & Membership Statistics -->
 <div class="row mb-4">

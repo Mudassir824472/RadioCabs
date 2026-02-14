@@ -1,0 +1,71 @@
+﻿@model RadioCabs.Models.PaymentPageViewModel
+@{
+    ViewData["Title"] = "Payment Receipt";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .receipt-card {
+        max-width: 700px;
+        margin: 50px auto;
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .receipt-header {
+        background: linear-gradient(135deg, #1f4037, #99f2c8);
+        padding: 25px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .status-success {
+        color: green;
+        font-weight: bold;
+    }
+
+    .btn-rounded {
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="card receipt-card">
+
+    <div class="receipt-header">
+        <h4>Payment Receipt</h4>
+    </div>
+
+    <div class="card-body p-4">
+
+        <p><strong>Section:</strong> @Model.Section</p>
+        <p><strong>Name:</strong> @Model.Name</p>
+        <p><strong>Payment Type:</strong> @Model.PaymentType</p>
+        <p><strong>Amount Paid:</strong> $@Model.PaymentAmount</p>
+        <p>
+            <strong>Status:</strong>
+            <span class="status-success">Successful ✓</span>
+        </p>
+
+        <p><strong>Date:</strong> @DateTime.Now.ToString("dd MMM yyyy hh:mm tt")</p>
+
+        <div class="mt-4 d-flex gap-3">
+            <a asp-controller="Home" asp-action="Index"
+               class="btn btn-primary btn-rounded">
+                Back to Home
+            </a>
+
+            <button onclick="window.print()"
+                    class="btn btn-outline-dark btn-rounded">
+                Print Receipt
+            </button>
+        </div>
+
+    </div>
+</div>

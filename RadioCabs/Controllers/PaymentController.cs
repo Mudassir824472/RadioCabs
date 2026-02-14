@@ -199,6 +199,20 @@ namespace RadioCabs.Controllers
 
 
         }
-     }
+        public IActionResult Receipt(string section, int id)
+        {
+            var model = new PaymentPageViewModel
+            {
+                Section = section,
+                Name = "Entity Name", // fetch from DB if needed
+                PaymentType = "Monthly",
+                PaymentAmount = 15,
+                PaymentStatus = "Paid"
+            };
+
+            return View(model);
+        }
+
+    }
 }
         

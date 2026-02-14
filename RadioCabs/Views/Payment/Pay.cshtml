@@ -126,9 +126,32 @@
                 <strong id="paymentAmount">$@Model.PaymentAmount</strong>
             </div>
 
-            <button type="submit" class="btn btn-success btn-rounded">
+            <button type="submit" class="btn btn-success btn-rounded" id="payBtn">
                 🔒 Pay Now
             </button>
+            <script>
+                const form = document.querySelector("form");
+                const payBtn = document.getElementById("payBtn");
+
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    payBtn.innerHTML = "Processing...";
+                    payBtn.disabled = true;
+
+                    setTimeout(() => {
+                        payBtn.innerHTML = "Payment Successful ✓";
+                        payBtn.classList.remove("btn-success");
+                        payBtn.classList.add("btn-primary");
+
+                        setTimeout(() => {
+                            window.location.href = "/Payment/Receipt?section=@Model.Section&id=@Model.EntityId";
+                        }, 1200);
+
+                    }, 1500);
+                });
+            </script>
+
 
         </form>
     </div>
@@ -138,6 +161,17 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+            
+        const cardInput = document.querySelector('[name="CardNumber"]');
+
+        cardInput.addEventListener("input", function (e) {
+            let value = e.target.value.replace(/\D/g, "");
+            value = value.substring(0, 16);
+
+            let formatted = value.match(/.{1,4}/g);
+            e.target.value = formatted ? formatted.join(" ") : value;
+        });
+
         const paymentType = document.getElementById('paymentType');
         const paymentAmount = document.getElementById('paymentAmount');
         const section = '@Model.Section';
