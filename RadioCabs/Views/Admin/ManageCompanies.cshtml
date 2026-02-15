@@ -3,17 +3,87 @@
     ViewData["Title"] = "Manage Companies";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Manage Companies</h2>
-    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+<style>
+    body {
+        background: #f4f6f9;
+    }
+
+    .premium-header {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        padding: 25px 30px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .premium-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.07);
+        transition: 0.3s ease;
+        overflow: hidden;
+    }
+
+        .premium-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+        }
+
+    .table thead {
+        background: #203a43;
+        color: white;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9fbfd;
+    }
+
+    .table tbody tr:hover {
+        background-color: #eef3ff;
+        transition: 0.2s;
+    }
+
+    .badge {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 5px 14px;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+    .alert-success {
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="premium-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0">Manage Companies</h2>
+        <small>View, edit and manage registered companies</small>
+    </div>
+    <a asp-action="Dashboard" class="btn btn-light">
+        ← Back to Dashboard
+    </a>
 </div>
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">@TempData["Success"]</div>
+    <div class="alert alert-success mb-4">
+        @TempData["Success"]
+    </div>
 }
 
-<div class="card">
+<div class="card premium-card">
     <div class="table-responsive">
         <table class="table table-striped mb-0">
             <thead>
@@ -24,13 +94,17 @@
                     <th>Contact Person</th>
                     <th>Membership</th>
                     <th>Payment</th>
-                    <th>Actions</th>
+                    <th style="width:200px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Any())
                 {
-                    <tr><td colspan="7" class="text-center text-muted py-4">No companies found.</td></tr>
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            No companies found.
+                        </td>
+                    </tr>
                 }
                 else
                 {
@@ -41,18 +115,37 @@
                             <td>@company.CompanyUniqueId</td>
                             <td>@company.Email</td>
                             <td>@(company.ContactPerson ?? "-")</td>
-                            <td>@company.MembershipType</td>
+                            <td>
+                                <span class="badge bg-primary">
+                                    @company.MembershipType
+                                </span>
+                            </td>
                             <td>
                                 <span class="badge @(company.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
                                     @(company.PaymentStatus ?? "Pending")
                                 </span>
                             </td>
                             <td class="d-flex gap-1">
-                                <a asp-action="ViewCompanyDetails" asp-route-id="@company.CompanyId" class="btn btn-sm btn-info">View</a>
-                                <a asp-action="EditCompany" asp-route-id="@company.CompanyId" class="btn btn-sm btn-warning">Edit</a>
-                                <form asp-action="DeleteCompany" asp-route-id="@company.CompanyId" method="post" onsubmit="return confirm('Delete this company?');">
+                                <a asp-action="ViewCompanyDetails"
+                                   asp-route-id="@company.CompanyId"
+                                   class="btn btn-sm btn-info text-white">
+                                    View
+                                </a>
+
+                                <a asp-action="EditCompany"
+                                   asp-route-id="@company.CompanyId"
+                                   class="btn btn-sm btn-warning text-dark">
+                                    Edit
+                                </a>
+
+                                <form asp-action="DeleteCompany"
+                                      asp-route-id="@company.CompanyId"
+                                      method="post"
+                                      onsubmit="return confirm('Delete this company?');">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
