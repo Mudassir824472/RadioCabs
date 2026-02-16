@@ -3,25 +3,109 @@
     ViewData["Title"] = "Manage Payments";
 }
 
-<h2 class="mb-3">Manage Payments</h2>
+<style>
+    body {
+        background: linear-gradient(to right, #f4f6f9, #eef2f7);
+    }
+
+    .premium-header {
+        background: linear-gradient(135deg, #141E30, #243B55);
+        padding: 30px;
+        border-radius: 22px;
+        color: white;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        margin-bottom: 30px;
+    }
+
+    .premium-card {
+        border: none;
+        border-radius: 22px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        transition: 0.3s ease;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+        .premium-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+    .card-header {
+        background: #243B55;
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 14px 20px;
+    }
+
+    .table thead {
+        background: #f1f3f6;
+        font-size: 14px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #eaf1ff;
+        transition: 0.2s ease;
+    }
+
+    .badge {
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .form-select-sm {
+        border-radius: 8px;
+    }
+
+    .btn-sm {
+        border-radius: 8px;
+        padding: 5px 14px;
+        transition: 0.25s ease;
+    }
+
+        .btn-sm:hover {
+            transform: scale(1.05);
+        }
+
+    .alert-success {
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="premium-header d-flex justify-content-between align-items-center">
+    <div>
+        <h2 class="mb-1">Manage Payments</h2>
+        <small>Update and monitor company, driver & advertisement payments</small>
+    </div>
+    <a asp-action="Dashboard" class="btn btn-light">
+        ← Back to Dashboard
+    </a>
+</div>
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">@TempData["Success"]</div>
+    <div class="alert alert-success mb-4">
+        @TempData["Success"]
+    </div>
 }
 
-<div class="card mb-4">
+<!-- Company Payments -->
+<div class="card premium-card">
     <div class="card-header">Company Payments</div>
     <div class="table-responsive">
-        <table class="table table-striped mb-0">
+        <table class="table align-middle mb-0">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Payment Type</th>
                     <th>Amount</th>
-                    <th>Current Status</th>
-                    <th>Update</th>
+                    <th>Status</th>
+                    <th style="width:260px;">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,8 +115,12 @@
                         <td>@company.CompanyUniqueId</td>
                         <td>@company.CompanyName</td>
                         <td>@(company.PaymentType ?? "Monthly")</td>
-                        <td>$@company.PaymentAmount</td>
-                        <td><span class="badge @(company.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(company.PaymentStatus ?? "Pending")</span></td>
+                        <td><strong>$@company.PaymentAmount</strong></td>
+                        <td>
+                            <span class="badge @(company.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                @(company.PaymentStatus ?? "Pending")
+                            </span>
+                        </td>
                         <td>
                             <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
                                 @Html.AntiForgeryToken()
@@ -42,7 +130,9 @@
                                     <option value="Pending" selected="@(company.PaymentStatus == "Pending")">Pending</option>
                                     <option value="Paid" selected="@(company.PaymentStatus == "Paid")">Paid</option>
                                 </select>
-                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Save
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -52,18 +142,19 @@
     </div>
 </div>
 
-<div class="card mb-4">
+<!-- Driver Payments -->
+<div class="card premium-card">
     <div class="card-header">Driver Payments</div>
     <div class="table-responsive">
-        <table class="table table-striped mb-0">
+        <table class="table align-middle mb-0">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Payment Type</th>
                     <th>Amount</th>
-                    <th>Current Status</th>
-                    <th>Update</th>
+                    <th>Status</th>
+                    <th style="width:260px;">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,8 +164,12 @@
                         <td>@driver.DriverUniqueId</td>
                         <td>@driver.DriverName</td>
                         <td>@(driver.PaymentType ?? "Monthly")</td>
-                        <td>$@driver.PaymentAmount</td>
-                        <td><span class="badge @(driver.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(driver.PaymentStatus ?? "Pending")</span></td>
+                        <td><strong>$@driver.PaymentAmount</strong></td>
+                        <td>
+                            <span class="badge @(driver.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                @(driver.PaymentStatus ?? "Pending")
+                            </span>
+                        </td>
                         <td>
                             <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
                                 @Html.AntiForgeryToken()
@@ -84,7 +179,9 @@
                                     <option value="Pending" selected="@(driver.PaymentStatus == "Pending")">Pending</option>
                                     <option value="Paid" selected="@(driver.PaymentStatus == "Paid")">Paid</option>
                                 </select>
-                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Save
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -94,18 +191,19 @@
     </div>
 </div>
 
-<div class="card">
+<!-- Advertisement Payments -->
+<div class="card premium-card">
     <div class="card-header">Advertisement Payments</div>
     <div class="table-responsive">
-        <table class="table table-striped mb-0">
+        <table class="table align-middle mb-0">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Company</th>
                     <th>Payment Type</th>
                     <th>Amount</th>
-                    <th>Current Status</th>
-                    <th>Update</th>
+                    <th>Status</th>
+                    <th style="width:260px;">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -115,8 +213,12 @@
                         <td>@advertisement.AdvertisementId</td>
                         <td>@advertisement.CompanyName</td>
                         <td>@(advertisement.PaymentType ?? "Monthly")</td>
-                        <td>$@advertisement.PaymentAmount</td>
-                        <td><span class="badge @(advertisement.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">@(advertisement.PaymentStatus ?? "Pending")</span></td>
+                        <td><strong>$@advertisement.PaymentAmount</strong></td>
+                        <td>
+                            <span class="badge @(advertisement.PaymentStatus == "Paid" ? "bg-success" : "bg-warning text-dark")">
+                                @(advertisement.PaymentStatus ?? "Pending")
+                            </span>
+                        </td>
                         <td>
                             <form asp-action="UpdatePaymentStatus" method="post" class="d-flex gap-2">
                                 @Html.AntiForgeryToken()
@@ -126,7 +228,9 @@
                                     <option value="Pending" selected="@(advertisement.PaymentStatus == "Pending")">Pending</option>
                                     <option value="Paid" selected="@(advertisement.PaymentStatus == "Paid")">Paid</option>
                                 </select>
-                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Save
+                                </button>
                             </form>
                         </td>
                     </tr>

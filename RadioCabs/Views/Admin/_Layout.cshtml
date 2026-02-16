@@ -6,50 +6,136 @@
     <title>Admin Dashboard - RadioCabs</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar Navigation -->
-@if (!Context.Request.Path.Value.ToLower().Contains("/admin/login"))
-            {
-                <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                <div class="sidebar-sticky pt-3">
-                    <h5 class="sidebar-heading px-3 mt-4 mb-1 text-muted">Admin Panel</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/Dashboard">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/ManageCompanies">Companies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/ManageDrivers">Drivers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/ManageAdvertisements">Advertisements</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/ManageFeedbacks">Feedback</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/ManagePayments">Payments</a>
-                        </li>
-                        <hr class="my-3" />
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/Logout">Logout</a>
-                        </li>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e3c72, #2a5298);
+            padding-top: 20px;
+            color: white;
+            transition: 0.3s;
+        }
+
+            .sidebar h4 {
+                text-align: center;
+                margin-bottom: 30px;
+                font-weight: 600;
+            }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                padding: 12px 25px;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    background: rgba(255,255,255,0.1);
+                    padding-left: 35px;
+                }
+
+        /* Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        /* Top Navbar */
+        .topbar {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dropdown-menu {
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .counter {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+    </style>
+
+    <div class="sidebar">
+        <h4>🚖 RadioCabs</h4>
+        <a href="/Admin/Dashboard"><i class="fa fa-chart-line me-2"></i> Dashboard</a>
+        <a href="/Admin/ManageCompanies"><i class="fa fa-building me-2"></i> Companies</a>
+        <a href="/Admin/ManageDrivers"><i class="fa fa-id-card me-2"></i> Drivers</a>
+        <a href="/Admin/ManageAdvertisements"><i class="fa fa-bullhorn me-2"></i> Ads</a>
+        <a href="/Admin/ManageFeedbacks"><i class="fa fa-comment me-2"></i> Feedback</a>
+        <a href="/Admin/ManagePayments"><i class="fa-regular fa-credit-card"></i> Payments</a>
+
+    </div>
+
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+        <div class="topbar">
+
+            <h5>Admin Dashboard</h5>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <!-- Messages -->
+                <div class="dropdown">
+                    <i class="fa fa-envelope fa-lg" data-bs-toggle="dropdown" style="cursor:pointer;"></i>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="dropdown-header">Messages</li>
+                        <li><a class="dropdown-item" href="#">New company registered</a></li>
+                        <li><a class="dropdown-item" href="#">Driver payment received</a></li>
                     </ul>
                 </div>
-            </nav>
-            }
-            <!-- Main Content -->
-            <main role="main" class="@(Context.Request.Path.Value.ToLower().Contains("/admin/login")
-                                  ? "col-12 d-flex justify-content-center align-items-center vh-100"
-                                  : "col-md-9 ml-sm-auto col-lg-10 px-4 py-4")">
-                @RenderBody()
-            </main>
+
+                <!-- Notifications -->
+                <div class="dropdown">
+                    <i class="fa fa-bell fa-lg" data-bs-toggle="dropdown" style="cursor:pointer;"></i>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="dropdown-header">Notifications</li>
+                        <li><a class="dropdown-item" href="#">5 Pending Payments</a></li>
+                        <li><a class="dropdown-item" href="#">2 New Feedbacks</a></li>
+                    </ul>
+                </div>
+
+                <!-- Profile -->
+                <div class="dropdown">
+                    <img src="~/uploads/download.png" class="rounded-circle" width="35" data-bs-toggle="dropdown" style="cursor:pointer;">
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr></li>
+                        <li><a class="dropdown-item text-danger" href="/Admin/Logout">Logout</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
         </div>
+
+        @RenderBody()
+
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

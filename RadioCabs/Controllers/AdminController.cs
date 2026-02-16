@@ -167,6 +167,7 @@ namespace RadioCabs.Controllers
                 FreeMembers = companies.Count(c => NormalizeMembership(c.MembershipType) == "Free")
             };
 
+
             return View(model);
         }
 

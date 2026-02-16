@@ -1,0 +1,263 @@
+﻿body {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://themewagon.github.io/carbook/images/bg_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-top: 80px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: antiquewhite;
+}
+
+.hero-section {
+    position: relative;
+    background: url('/images/car.jpg') no-repeat center center/cover;
+    height: 100vh;
+}
+
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+    }
+
+
+.card {
+    background: rgba(255, 255, 255, 0.9);  Slight transparency 
+}
+
+
+NAVBAR STYLING
+
+Bigger Navbar
+.custom-navbar {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 12px 20px;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #00d4ff !important;
+    }
+
+
+/* Brand 
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 1px;
+}*/
+
+/*.theme-green {
+    color: #01D28E;
+    font-weight: 700;
+    letter-spacing: 1px;
+}*/
+
+/* Navbar links 
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 17px;
+    padding-left: 15px;
+    padding-right: 15px;
+    transition: 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #01D28E !important;
+    }*/
+
+body {
+    min-height: auto;
+    padding-top: 110px;  agar fixed-top navbar hai 
+}
+
+
+
+=========================
+BUTTON STYLING
+=========================
+
+.btn-custom {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,114,255,0.4);
+}
+
+
+ =========================
+   HEADINGS
+========================= 
+
+h1, h2, h3, h4 {
+    color: #1089FF;
+    font-weight: 600;
+}
+
+ =========================
+   FOOTER
+========================= 
+
+.footer {
+    background: transparent;  ya page background ke color se match karo 
+    color: #333 !important;
+    padding: 5px 0;  minimal padding 
+    border-top: 1px solid rgba(0,0,0,0.1);  thin line 
+    text-align: center;
+}
+
+    .footer a {
+        color: #1089FF !important;
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: #01D28E !important;
+        }
+
+ =========================
+   HERO / WELCOME SECTION
+========================= 
+.text-center h1.display-4 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1089FF;
+    margin-bottom: 15px;
+}
+
+.text-center p a {
+    color: #01D28E;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .text-center p a:hover {
+        color: #1089FF;
+    }
+
+ =========================
+   INFO BOX (Light Box)
+========================= 
+.p-4.p-md-5.bg-light.rounded-3 {
+    background: rgba(255, 255, 255, 0.9);  slightly transparent for clean look 
+    padding: 40px 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-bottom: 40px;
+}
+
+.p-4.p-md-5 h1.display-5.fw-bold {
+    color: #1089FF;
+    font-weight: 700;
+}
+
+.p-4.p-md-5 p {
+    font-size: 1.15rem;
+    color: #333;
+}
+
+ =========================
+   CARDS SECTION
+========================= 
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h5.card-title {
+        color: #1089FF;
+        font-weight: 600;
+    }
+
+    .card p.card-text {
+        color: #555;
+    }
+
+    .card .btn-primary {
+        background-color: #01D28E;
+        border-color: #01D28E;
+        color: #ffffff;
+        font-weight: 500;
+        transition: 0.3s ease;
+    }
+
+        .card .btn-primary:hover {
+            background-color: #00b87a;
+            border-color: #00b87a;
+        }
+
+ =========================
+   TABLES (Payment Plans)
+========================= 
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: #1089FF;
+        color: white;
+    }
+
+    .table tbody tr:nth-of-type(odd) {
+        background-color: rgba(16, 137, 255, 0.05);
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+    }
+
+ =========================
+   AUTHENTICATION BUTTONS
+========================= 
+.d-grid .btns {
+    border-color: #01D28E;
+    color: #01D28E;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .d-grid .btns:hover {
+        background-color: #01D28E;
+        color: #ffffff;
+    }
+
+
+ =========================
+   RESPONSIVE SPACING
+========================= 
+@media (max-width: 992px) {
+    .text-center h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    .p-4.p-md-5 {
+        padding: 30px 20px;
+    }
+}

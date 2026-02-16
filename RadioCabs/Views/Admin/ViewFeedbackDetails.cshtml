@@ -3,38 +3,83 @@
     ViewData["Title"] = "Feedback Details";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Feedback Details</h2>
-    <a asp-action="ManageFeedbacks" class="btn btn-secondary">Back to Manage Feedback</a>
-</div>
+<div class="container mt-4">
 
-<div class="card">
-    <div class="card-body">
-        <dl class="row mb-0">
-            <dt class="col-sm-3">Name</dt>
-            <dd class="col-sm-9">@(Model.Name ?? "-")</dd>
-
-            <dt class="col-sm-3">Type</dt>
-            <dd class="col-sm-9">@(Model.Type ?? "-")</dd>
-
-            <dt class="col-sm-3">Mobile</dt>
-            <dd class="col-sm-9">@(Model.Mobile ?? "-")</dd>
-
-            <dt class="col-sm-3">Email</dt>
-            <dd class="col-sm-9">@(Model.Email ?? "-")</dd>
-
-            <dt class="col-sm-3">City</dt>
-            <dd class="col-sm-9">@(Model.City ?? "-")</dd>
-
-            <dt class="col-sm-3">Description</dt>
-            <dd class="col-sm-9">@(Model.Description ?? "-")</dd>
-        </dl>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">💬 Feedback Details</h2>
+            <small class="text-muted">User submitted feedback information</small>
+        </div>
+        <a asp-action="ManageFeedbacks" class="btn btn-outline-secondary">
+            ← Back to Manage Feedback
+        </a>
     </div>
-</div>
 
-<div class="mt-3">
-    <form asp-action="DeleteFeedback" asp-route-id="@Model.FeedbackId" method="post" onsubmit="return confirm('Delete this feedback entry?');">
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-danger">Delete Feedback</button>
-    </form>
+    <!-- Main Card -->
+    <div class="card shadow-lg border-0 rounded-4">
+        
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h5 class="mb-0">@(Model.Name ?? "Anonymous User")</h5>
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <strong>Type:</strong><br />
+                    <span class="badge bg-info text-dark px-3 py-2">
+                        @(Model.Type ?? "-")
+                    </span>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>City:</strong><br />
+                    <span class="text-muted">
+                        @(Model.City ?? "-")
+                    </span>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Mobile:</strong><br />
+                    <span class="text-muted">
+                        @(Model.Mobile ?? "-")
+                    </span>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Email:</strong><br />
+                    <span class="text-muted">
+                        @(Model.Email ?? "-")
+                    </span>
+                </div>
+
+                <div class="col-12">
+                    <strong>Description:</strong><br />
+                    <div class="p-3 mt-2 bg-light rounded-3 border">
+                        @(Model.Description ?? "-")
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Action Section -->
+    <div class="mt-4">
+        <form asp-action="DeleteFeedback"
+              asp-route-id="@Model.FeedbackId"
+              method="post"
+              onsubmit="return confirm('Delete this feedback entry?');">
+
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="btn btn-danger px-4">
+                🗑 Delete Feedback
+            </button>
+        </form>
+    </div>
+
 </div>
