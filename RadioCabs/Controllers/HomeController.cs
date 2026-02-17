@@ -28,10 +28,20 @@ namespace RadioCabs.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
+       
+
+        public IActionResult LoginOptions()
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult RegisterOptions()
+        {
+            return View();
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

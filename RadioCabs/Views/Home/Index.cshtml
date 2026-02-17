@@ -1,4 +1,7 @@
-﻿@{
+﻿﻿
+@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home";
 }
 <!DOCTYPE html>
@@ -9,7 +12,6 @@
     <title>@ViewData["Title"] - RadioCabs</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/RadioCabs.style.css" asp-append-version="true" />
 </head>
 <body>
@@ -19,7 +21,7 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
         <div class="hero-content position-relative p-4 p-md-5 mb-4 text-white">
 
-        <div class="container-fluid py-3 align-content-center">
+        <div class="container-fluid py-3 align-content-center ">
             <h1 class="display-5 fw-bold">RadioCabs.in</h1>
             <p class="col-md-10 fs-5 text-white">
                 RadioCabs.in is a city-wise directory of radio taxi operators, drivers, and transport services across India.
@@ -71,10 +73,9 @@
         <div class="row mt-5">
             <div class="col-12">
                 <h3>Featured Paid Advertisements</h3>
-                <p class="text-muted">Companies that completed advertisement payment are highlighted here for easy visibility.</p>
             </div>
 
-            @if (!Model.PaidAdvertisements.Any())
+            @if (Model?.PaidAdvertisements == null || Model.PaidAdvertisements.Count == 0)
             {
                 <div class="col-12">
                     <div class="alert alert-light border">No paid advertisements are available right now.</div>
@@ -101,108 +102,137 @@
         </div>
 
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <h2>Services Overview</h2>
-                <p class="text-muted">
-                    RadioCabs.in connects passengers, radio taxi operators, and professional drivers through a
-                    city-wise directory. Explore the core services below to register, advertise, and manage
-                    listings across India.
-                </p>
+        <!-- SERVICES OVERVIEW SECTION -->
+        <section class="content-section py-5 bg-transparent" id="services">
+            <div class="container">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Listings & Memberships</h5>
-                        <p class="card-text">
-                            Cab companies can register to appear in city-wise search results. Choose from
-                            <strong>Premium</strong>, <strong>Basic</strong>, or <strong>Free</strong> memberships
-                            depending on visibility needs.
-                        </p>
-                    </div>
+                <!-- Section Header -->
+                <div class="text-center mb-5">
+                    <h2 class="display-4 text-primary fw-bold">Services Overview</h2>
+                    <p class="text-light fs-5">
+                        RadioCabs.in connects passengers, radio taxi operators, and professional drivers through a city-wise directory.
+                        Explore the core services below to register, advertise, and manage listings across India.
+                    </p>
                 </div>
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Driver Directory</h5>
-                        <p class="card-text">
-                            Drivers can register their profiles, while companies search and filter by location,
-                            experience, and contact details.
-                        </p>
-                    </div>
-                </div>
+                <!-- Cards Row -->
+                <div class="row g-4">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Advertising Requests</h5>
-                        <p class="card-text">
-                            Registered companies can submit advertising requests to promote their services online
-                            and enhance visibility.
-                        </p>
+                    <!-- Listings & Memberships -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">Listings & Memberships</h5>
+                                <p class="card-text">
+                                    Cab companies can register to appear in city-wise search results.
+                                    Choose from <strong>Premium, Basic, or Free</strong> memberships depending on visibility needs.
+                                </p>
+                                <ul class="list-unstyled">
+                                    <li><strong>Premium:</strong> Featured listing, priority visibility</li>
+                                    <li><strong>Basic:</strong> Standard listing with limited features</li>
+                                    <li><strong>Free:</strong> Basic visibility in search results</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Feedback & Support</h5>
-                        <p class="card-text">
-                            Users can share complaints, suggestions, or compliments through the feedback form to
-                            help us improve the experience.
-                        </p>
+                    <!-- Driver Directory -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">Driver Directory</h5>
+                                <p class="card-text">
+                                    Drivers can register their profiles. Companies can filter and search drivers by:
+                                </p>
+                                <ul>
+                                    <li>Location</li>
+                                    <li>Experience</li>
+                                    <li>Contact details</li>
+                                    <li>Vehicle type</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Advertising Requests -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">Advertising Requests</h5>
+                                <p class="card-text">
+                                    Registered companies can submit advertising requests to promote services online and enhance visibility.
+                                </p>
+                                <ul>
+                                    <li>Custom banners on homepage</li>
+                                    <li>Feature on city search pages</li>
+                                    <li>Highlight services to targeted audience</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback & Support -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">Feedback & Support</h5>
+                                <p class="card-text">
+                                    Users can share complaints, suggestions, or compliments to help us improve the experience.
+                                </p>
+                                <ul>
+                                    <li>Submit feedback through online form</li>
+                                    <li>Track status of your submissions</li>
+                                    <li>Receive responses from the admin team</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Plans -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">Payment Plans</h5>
+                                <p class="card-text">
+                                    Payments are done online either <strong>Monthly</strong> or <strong>Quarterly</strong>:
+                                </p>
+                                <ul>
+                                    <li>Registration: $15/month | $40/quarter</li>
+                                    <li>Driver: $10/month | $25/quarter</li>
+                                    <li>Advertisement: $15/month | $40/quarter</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Roles -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">User Roles</h5>
+                                <p class="card-text">
+                                    The platform has three types of users:
+                                </p>
+                                <ul>
+                                    <li><strong>Admin:</strong> Manage all registrations, payments, driver details, advertisements, and feedback</li>
+                                    <li><strong>Registered Unit:</strong> View their profile, check payment status, manage listings and ads</li>
+                                    <li><strong>User:</strong> Search for companies/drivers, submit feedback, register for services</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </section>
 
-            <div class="col-lg-4">
-                <h3>Login Access</h3>
-                <ul class="list-group mb-4">
-                    <li class="list-group-item"><strong>Admin</strong> – Manage registrations, payments, and feedback.</li>
-                    <li class="list-group-item"><strong>Registered Unit</strong> – View profiles, orders, and payment status.</li>
-                </ul>
-
-                <h3>Payment Plans</h3>
-                <table class="table table-bordered">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Section</th>
-                            <th>Monthly</th>
-                            <th>Quarterly</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Registration</td><td>$15</td><td>$40</td></tr>
-                        <tr><td>Driver</td><td>$10</td><td>$25</td></tr>
-                        <tr><td>Advertisement</td><td>$15</td><td>$40</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+</div>
 
 
-    <div class="row mt-4">
-        <div class="col-lg-8">
-            <h3>Payment Plans</h3>
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Section</th>
-                        <th>Monthly</th>
-                        <th>Quarterly</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Registration</td><td>$15</td><td>$40</td></tr>
-                    <tr><td>Driver</td><td>$10</td><td>$25</td></tr>
-                    <tr><td>Advertisement</td><td>$15</td><td>$40</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-lg-4">
-            <h3>Authentication</h3>
-            <div class="d-grid gap-2">
-                <a asp-controller="Company" asp-action="Login" class="btn btns">Registered Unit Login</a>
-                <a asp-controller="Admin" asp-action="Login" class="btn btns">Admin Login</a>
-                <a asp-controller="Feedback" asp-action="Index" class="btn btns">Share Feedback</a>
-            </div>
-        </div>
-    </div>
+
+
 </body>
+
+
+
+</html>

@@ -22,6 +22,21 @@
         background: rgba(0,0,0,0.6);
     }
 
+.content-section {
+    color: #ffffff;
+}
+
+    .content-section h2,
+    .content-section h3,
+    .content-section h5 {
+        color: #ffffff;
+    }
+
+    .content-section .text-muted {
+        color: #e0e0e0 !important;
+    }
+
+
 
 .card {
     background: rgba(255, 255, 255, 0.9);  Slight transparency 
@@ -32,7 +47,7 @@ NAVBAR STYLING
 
 Bigger Navbar
 .custom-navbar {
-    background: rgba(0, 0, 0, 0.85);
+    background: transparent !important;
     backdrop-filter: blur(8px);
     padding: 12px 20px;
 }
@@ -49,21 +64,21 @@ Bigger Navbar
     }
 
 
-/* Brand 
+/* Brand*/ 
 .navbar-brand {
     color: #ffffff !important;
     font-weight: bold;
     font-size: 24px;
     letter-spacing: 1px;
-}*/
+}
 
-/*.theme-green {
+.theme-green {
     color: #01D28E;
     font-weight: 700;
     letter-spacing: 1px;
-}*/
+}
 
-/* Navbar links 
+/* Navbar links*/ 
 .navbar-nav .nav-link {
     color: #ffffff !important;
     font-weight: 500;
@@ -75,7 +90,7 @@ Bigger Navbar
 
     .navbar-nav .nav-link:hover {
         color: #01D28E !important;
-    }*/
+    }
 
 body {
     min-height: auto;
@@ -94,7 +109,7 @@ BUTTON STYLING
     padding: 10px 22px;
     border-radius: 30px;
     font-weight: 600;
-    color: #fff;
+    color: white;
     transition: 0.3s ease;
 }
 
@@ -233,7 +248,206 @@ h1, h2, h3, h4 {
         vertical-align: middle;
     }
 
- =========================
+ =========================/* =====================================================
+   GLOBAL STYLING
+===================================================== */
+
+body {
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url("https://themewagon.github.io/carbook/images/bg_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-top: 110px; /* For fixed navbar */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f5f5f5;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    font-weight: 600;
+    color: #1089FF;
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.custom-navbar {
+    background: transparent;
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.theme-green {
+    color: #01D28E;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0 15px;
+    transition: 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #01D28E !important;
+}
+
+/* =====================================================
+   HERO SECTION
+===================================================== */
+
+.hero-section {
+    position: relative;
+    height: 100vh;
+    background: url('/images/car.jpg') no-repeat center center/cover;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn-custom {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,114,255,0.4);
+}
+
+/* Authentication Buttons */
+.d-grid .btns {
+    border: 1px solid #01D28E;
+    color: #01D28E;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.d-grid .btns:hover {
+    background: #01D28E;
+    color: #fff;
+}
+
+/* =====================================================
+   CONTENT SECTIONS
+===================================================== */
+
+.content-section {
+    color: #ffffff;
+}
+
+.content-section .text-muted {
+    color: #dcdcdc !important;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.card-title {
+    color: #1089FF;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #555;
+}
+
+/* =====================================================
+   TABLES
+===================================================== */
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #1089FF;
+    color: #fff;
+}
+
+.table tbody tr:nth-child(odd) {
+    background: rgba(16,137,255,0.05);
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    background: transparent;
+    color: #ccc;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer a {
+    color: #1089FF;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #01D28E;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 992px) {
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    body {
+        padding-top: 90px;
+    }
+}
+
    AUTHENTICATION BUTTONS
 ========================= 
 .d-grid .btns {

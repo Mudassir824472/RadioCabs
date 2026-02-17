@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Login Options";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-4">
+                <h1 class="display-6 fw-bold">Choose Login Type</h1>
+                <p class="text-muted mb-0">Select your role to continue to the correct login page.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title">Driver</h4>
+                            <p class="card-text text-muted">For registered drivers to access their dashboard and profile.</p>
+                            <a asp-controller="Driver" asp-action="Login" class="btn btn-primary mt-auto">Driver Login</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title">Company</h4>
+                            <p class="card-text text-muted">For companies to manage profile, listings, and account data.</p>
+                            <a asp-controller="Company" asp-action="Login" class="btn btn-success mt-auto">Company Login</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title">Admin</h4>
+                            <p class="card-text text-muted">For administrators to monitor and manage platform operations.</p>
+                            <a asp-controller="Admin" asp-action="Login" class="btn btn-dark mt-auto">Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

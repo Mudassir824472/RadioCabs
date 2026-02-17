@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Register Options";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <h2 class="mb-3">Choose your registration option</h2>
+                    <p class="text-muted mb-4">
+                        Select the appropriate option below to continue.
+                    </p>
+
+                    <div class="d-grid gap-3">
+                        <a asp-controller="Driver" asp-action="Register" class="btn btn-primary btn-lg">Driver Registration</a>
+                        <a asp-controller="Company" asp-action="Register" class="btn btn-success btn-lg">Company Registration</a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

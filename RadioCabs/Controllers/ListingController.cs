@@ -17,18 +17,20 @@ namespace RadioCabs.Controllers
         public IActionResult Index(string searchTerm = "", string city = "", string membershipType = "", string paymentStatus = "")
         {
             var query = _context.Companies.AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 query = query.Where(c =>
                     c.CompanyName.Contains(searchTerm) ||
-                    c.ContactPerson.Contains(searchTerm) ||
+                    (c.ContactPerson ?? string.Empty).Contains(searchTerm) || c.Email.Contains(searchTerm) ||
                     c.Email.Contains(searchTerm) ||
-                    c.Mobile.Contains(searchTerm) ||
-                    c.CitySafe().Contains(searchTerm));
+                    (c.Mobile ?? string.Empty).Contains(searchTerm) ||
+                    (c.Address ?? string.Empty).Contains(searchTerm));
             }
+
             if (!string.IsNullOrWhiteSpace(city))
             {
-                query = query.Where(c => c.CitySafe().Contains(city));
+                query = query.Where(c => (c.Address ?? string.Empty).Contains(city));
             }
 
             if (!string.IsNullOrWhiteSpace(membershipType))
@@ -79,14 +81,6 @@ namespace RadioCabs.Controllers
 
             TempData["Success"] = "Company registration completed successfully.";
             return RedirectToAction(nameof(Index));
-        }
-    }
-
-    internal static class CompanyExtensions
-    {
-        public static string CitySafe(this Company company)
-        {
-            return company.Address ?? string.Empty;
         }
     }
 }
