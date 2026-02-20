@@ -257,7 +257,7 @@ namespace RadioCabs.Controllers
 
             TempData["Success"] = "Driver registration completed successfully.";
             TempData["DriverId"] = model.DriverId;
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Login));
         }
     }
 }

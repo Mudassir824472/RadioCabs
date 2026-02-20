@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RadioCabs.Helpers;
 using RadioCabs.Models;
@@ -17,9 +18,28 @@ namespace RadioCabs.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            int? companyId = HttpContext.Session.GetInt32("CompanyId");
+            if (companyId == null)
+            {
+                TempData["Error"] = "Please login as a company before advertising.";
+                return RedirectToAction("Login", "Company");
+            }
+
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == companyId.Value);
+            if (company == null)
+            {
+                HttpContext.Session.Remove("CompanyId");
+                HttpContext.Session.Remove("CompanyName");
+                TempData["Error"] = "Please login as a valid company account before advertising.";
+                return RedirectToAction("Login", "Company");
+            }
+
+
             var model = new AdvertisePageViewModel
             {
-                Companies = _context.Companies.OrderBy(c => c.CompanyName).ToList()
+                CompanyId = company.CompanyId,
+                CompanyName = company.CompanyName ?? string.Empty,
+                CompanyUniqueId = company.CompanyUniqueId ?? string.Empty
             };
 
             return View(model);
@@ -30,20 +50,25 @@ namespace RadioCabs.Controllers
         public IActionResult Index(AdvertisePageViewModel model, string submitAction)
         {
             model.Advertisement ??= new Advertisement();
-            model.Companies = _context.Companies.OrderBy(c => c.CompanyName).ToList();
-
-            if (model.CompanyId == null)
+            int? loggedInCompanyId = HttpContext.Session.GetInt32("CompanyId");
+            if (loggedInCompanyId == null)
             {
-                ModelState.AddModelError("CompanyId", "Please select a registered company.");
-                return View(model);
+                TempData["Error"] = "Please login as a company before advertising.";
+                return RedirectToAction("Login", "Company");
             }
 
-            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == model.CompanyId);
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == loggedInCompanyId.Value);
             if (company == null)
             {
-                ModelState.AddModelError("CompanyId", "Selected company was not found.");
-                return View(model);
+                HttpContext.Session.Remove("CompanyId");
+                HttpContext.Session.Remove("CompanyName");
+                TempData["Error"] = "Please login as a valid company account before advertising.";
+                return RedirectToAction("Login", "Company");
             }
+
+            model.CompanyId = company.CompanyId;
+            model.CompanyName = company.CompanyName ?? string.Empty;
+            model.CompanyUniqueId = company.CompanyUniqueId ?? string.Empty;
 
 
             model.Advertisement.CompanyName = company.CompanyName;

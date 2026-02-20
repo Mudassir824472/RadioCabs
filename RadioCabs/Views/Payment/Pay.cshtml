@@ -93,7 +93,7 @@
                 <div class="col-md-6 mb-3">
                     <label asp-for="CardNumber" class="form-label"></label>
                     <input asp-for="CardNumber" class="form-control"
-                           placeholder="1234 1234 1234 1234" inputmode="numeric" />
+                           placeholder="1234123412341234" inputmode="numeric" maxlength="19" />
                     <span asp-validation-for="CardNumber" class="text-danger"></span>
                 </div>
             </div>
@@ -101,21 +101,21 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label asp-for="Cvv" class="form-label"></label>
-                    <input asp-for="Cvv" class="form-control" placeholder="123" inputmode="numeric" />
+                    <input asp-for="Cvv" class="form-control" placeholder="123" inputmode="numeric" maxlength="4" />
                     <span asp-validation-for="Cvv" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label asp-for="ExpiryMonth" class="form-label"></label>
                     <input asp-for="ExpiryMonth" class="form-control"
-                           placeholder="MM" inputmode="numeric" />
+                           placeholder="MM" inputmode="numeric" maxlength="2" />
                     <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label asp-for="ExpiryYear" class="form-label"></label>
                     <input asp-for="ExpiryYear" class="form-control"
-                           placeholder="YYYY" inputmode="numeric" />
+                           placeholder="YYYY" inputmode="numeric" maxlength="4" />
                     <span asp-validation-for="ExpiryYear" class="text-danger"></span>
                 </div>
             </div>
@@ -129,65 +129,50 @@
             <button type="submit" class="btn btn-success btn-rounded" id="payBtn">
                 🔒 Pay Now
             </button>
+
             <script>
                 const form = document.querySelector("form");
                 const payBtn = document.getElementById("payBtn");
+                const cardInput = document.querySelector('[name="CardNumber"]');
+                const cvvInput = document.querySelector('[name="Cvv"]');
+                const paymentType = document.getElementById('paymentType');
+                const paymentAmount = document.getElementById('paymentAmount');
+                const section = '@Model.Section';
 
-                form.addEventListener("submit", function (e) {
-                    e.preventDefault();
+                // Remove spaces, allow only digits, limit to 19 digits
+                cardInput.addEventListener("input", function (e) {
+                    let value = e.target.value.replace(/\D/g, "");
+                    e.target.value = value.substring(0, 19);
+                });
 
+                // Submit handler: clean card and CVV
+                form.addEventListener("submit", function () {
                     payBtn.innerHTML = "Processing...";
                     payBtn.disabled = true;
 
-                    setTimeout(() => {
-                        payBtn.innerHTML = "Payment Successful ✓";
-                        payBtn.classList.remove("btn-success");
-                        payBtn.classList.add("btn-primary");
-
-                        setTimeout(() => {
-                            window.location.href = "/Payment/Receipt?section=@Model.Section&id=@Model.EntityId";
-                        }, 1200);
-
-                    }, 1500);
+                    cardInput.value = cardInput.value.replace(/\D/g, "");
+                    cvvInput.value = cvvInput.value.replace(/\D/g, "");
                 });
+
+                // Payment amount logic
+                function amountFor(type) {
+                    if (section === 'Driver') {
+                        return type === 'Quarterly' ? 25 : 10;
+                    }
+                    return type === 'Quarterly' ? 40 : 15;
+                }
+
+                function updateAmount() {
+                    paymentAmount.textContent = `$${amountFor(paymentType.value)}`;
+                }
+
+                paymentType.addEventListener('change', updateAmount);
+                updateAmount();
             </script>
-
-
         </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script>
-            
-        const cardInput = document.querySelector('[name="CardNumber"]');
-
-        cardInput.addEventListener("input", function (e) {
-            let value = e.target.value.replace(/\D/g, "");
-            value = value.substring(0, 16);
-
-            let formatted = value.match(/.{1,4}/g);
-            e.target.value = formatted ? formatted.join(" ") : value;
-        });
-
-        const paymentType = document.getElementById('paymentType');
-        const paymentAmount = document.getElementById('paymentAmount');
-        const section = '@Model.Section';
-
-        function amountFor(type) {
-            if (section === 'Driver') {
-                return type === 'Quarterly' ? 25 : 10;
-            }
-            return type === 'Quarterly' ? 40 : 15;
-        }
-
-        function updateAmount() {
-            paymentAmount.textContent = `$${amountFor(paymentType.value)}`;
-        }
-
-        paymentType.addEventListener('change', updateAmount);
-        updateAmount();
-    </script>
 }
